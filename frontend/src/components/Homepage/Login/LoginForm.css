@@ -1,0 +1,91 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+}
+
+.input-field {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.input-field-error {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid red;
+  border-radius: 5px;
+}
+.password-container {
+  position: relative;
+}
+
+.input-error{
+  background-color: red;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.show-hide {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #fff;
+  background-color: #5f27cd;
+  border-radius: 5px;
+}
+
+.guest-btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #fff;
+  background-color: #2ecc71;
+  border-radius: 5px;
+}
+
+/* For screens smaller than 768px */
+@media screen and (max-width: 768px) {
+
+  .input-field {
+    font-size: 14px;
+  }
+
+  .show-hide {
+    font-size: 12px;
+  }
+}
+
+/* For screens smaller than 480px */
+@media screen and (max-width: 480px) {
+    
+  .input-field {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .show-hide {
+    font-size: 12px;
+  }
+}

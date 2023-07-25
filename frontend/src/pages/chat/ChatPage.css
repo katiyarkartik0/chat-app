@@ -1,0 +1,89 @@
+/* Basic layout styles */
+.chat-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.chat-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.friends-list {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.chat-box {
+  flex: 2;
+}
+
+/* Styles for the friends list */
+.friends-list-container {
+  background-color: #f7f7f7;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.friends-list-container h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.friends-list-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.friends-list-container li {
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Styles for the side drawer */
+.side-drawer {
+  position: fixed;
+  top: 60px;
+  /* left: -100px; */
+  width: 300px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease-in-out;
+}
+
+.side-drawer h3 {
+  margin-top: 0;
+}
+
+.side-drawer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.side-drawer li {
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .chat-container {
+    flex-direction: column;
+  }
+
+  .friends-list {
+    padding-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .side-drawer {
+    right: 0;
+  }
+}

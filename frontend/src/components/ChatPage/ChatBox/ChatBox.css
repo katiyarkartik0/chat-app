@@ -1,0 +1,65 @@
+
+  /* Styles for the chat box */
+  .chat-box-container {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .messages {
+    /* Add styles for the chat messages here */
+    height: 200px; /* Example height; adjust as needed */
+    overflow-y: auto;
+  }
+  
+  .chat-input {
+    margin-top: 10px;
+  }
+  
+  .chat-input input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .send-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .send-button:hover {
+    background-color: #0056b3;
+  }
+
+  .chat-input {
+    display: flex;
+    align-items: center; /* Align items vertically in the flex container */
+  }
+  
+  .chat-input input[type="text"] {
+    flex: 1; /* Take up remaining space */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px; /* Add spacing between input and button */
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    /* ... (existing responsive styles) */
+    .chat-input input[type="text"] {
+        max-width: 200px;
+      }
+    /* Additional styles for the send button */
+    .send-button {
+      margin-top: 10px;
+      max-width: 200px;
+    }
+  }
