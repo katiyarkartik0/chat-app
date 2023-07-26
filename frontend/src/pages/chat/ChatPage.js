@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import "./ChatPage.css"
 import Header from '../../components/ChatPage/Header/Header';
-import FriendList from '../../components/ChatPage/FriendList/FriendList';
 import ChatBox from '../../components/ChatPage/ChatBox/ChatBox';
 import SideDrawer from '../../components/ChatPage/SideDrawer/SideDrawer';
+import ChatsList from '../../components/ChatPage/ChatsList/ChatsList';
 
 const ChatPage = () => {
   // You can manage state and logic for the side drawer here if needed
@@ -15,7 +15,7 @@ const ChatPage = () => {
       <Header setShowSideDrawer={setShowSideDrawer}/>
       <div className="chat-container ">
         <div className="friends-list">
-          <FriendList />
+          <ChatsList />
         </div>
         <div className="chat-box">
           <ChatBox />

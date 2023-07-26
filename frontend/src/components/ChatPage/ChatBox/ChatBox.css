@@ -5,11 +5,13 @@
     padding: 10px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* height: 100%; */
   }
   
   .messages {
     /* Add styles for the chat messages here */
-    height: 200px; /* Example height; adjust as needed */
+    /* height: 200px; Example height; adjust as needed */
+    height:500px;
     overflow-y: auto;
   }
   

@@ -6,7 +6,7 @@ const sendMessage = async (req, res) => {
     return res.status(403).send(req.msg);
   }
   const userId = req.id;
-
+  console.log(req.body)
   const { content, chatId } = req.body;
 
   if (!content || !chatId) {
@@ -35,13 +35,28 @@ const sendMessage = async (req, res) => {
           path: "chat.users",
           select: "name email",
         });
-        await Chat.findByIdAndUpdate(chatId, { latestMessage:message })
-        res.status(200).json(results);
-    });
-
+        await Chat.findByIdAndUpdate(chatId, { latestMessage: message });
+        res.status(200).json(results[0]);
+      });
   } catch (error) {
     res.status(400).send(error);
   }
 };
 
-module.exports = { sendMessage };
+const fetchAllMessages = async (req, res) => {
+  if (req.verified == false) {
+    return res.status(403).send(req.msg);
+  }
+  const { chatId } = req.params;
+  try {
+    const message = await Message.find({ chat: chatId })
+      .populate("sender", "name email")
+      .populate("chat");
+
+      res.status(200).json(message);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
+module.exports = { sendMessage,fetchAllMessages };
