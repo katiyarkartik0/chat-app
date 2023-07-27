@@ -30,23 +30,24 @@ const ChatsList = () => {
   const oneOnOnechats = chats.map((chat) => {
     if (!chat.isGroupChat) {
       return <Chat chat={chat} key={chat._id} />;
-    }
-    else{
+    } else {
       rooms.push(<Chat chat={chat} key={chat._id} />);
     }
-  })
+  });
 
   return (
     <div className="chats-list-container">
-      <h2>ROOMS</h2>
-      <ul>
-        {rooms}
-      </ul>
+      <div className="room-list-header">
+        <h2>ROOMS</h2>
+        <button type="submit" className="create-a-room-button">
+          Create a room
+        </button>
+      </div>
+      <br></br>
+      <ul>{rooms}</ul>
       <br></br>
       <h2>Chats List</h2>
-      <ul>
-        {oneOnOnechats}
-      </ul>
+      <ul>{oneOnOnechats}</ul>
     </div>
   );
 };

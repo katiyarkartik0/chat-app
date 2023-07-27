@@ -20,16 +20,16 @@ class Validator {
         msg:
           attempt == "logIn"
             ? "user exists, we are good to login "
-            : "user already exists, try signing in",
+            : "user with this email already exists, try signing in with some other email",
       };
     }
     return {
       isEmailValid: true,
       userData: null,
       msg:
-        attempt == "register"
-          ? "email not in the database,we are good to register"
-          : "email not found, try registering first",
+        attempt == "signup"
+          ? "email not in the database,we are good to signup"
+          : "email not found, try signing-up first",
     };
   }
 }

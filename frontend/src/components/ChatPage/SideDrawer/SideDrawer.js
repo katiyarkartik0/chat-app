@@ -5,9 +5,6 @@ import SearchResult from '../Header/SearchResult/SearchResult';
 
 const SideDrawer = ({showSideDrawer,setShowSideDrawer}) => {
 
-  // Replace this with your actual list of people data
-  const people = ['Person 1', 'Person 2', 'Person 3'];
-
   const searchedChatsAndUsers = useSelector((state)=>state.search.searchedChatsAndUsers);
 
   return (

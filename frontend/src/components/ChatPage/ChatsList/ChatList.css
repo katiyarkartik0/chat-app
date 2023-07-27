@@ -1,4 +1,10 @@
 /* Styles for the friends list */
+.room-list-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .chats-list-container {
   background-color: #f7f7f7;
   padding: 10px;
@@ -21,4 +27,18 @@
 .chats-list-container li {
   padding: 8px;
   border-bottom: 1px solid #ccc;
+}
+
+.create-a-room-button {
+  background-color: #4aaf3f;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-a-room-button:hover {
+  background-color: #067128;
 }

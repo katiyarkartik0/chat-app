@@ -8,10 +8,14 @@ const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
   const validator = new Validator();
   const { userData, msg, isEmailValid } = await validator.getUser(email, {
-    attempt: "register",
+    attempt: "signup",
   });
   if (!isEmailValid || userData) {
-    return res.status(400).send(msg);
+    return res.status(400).json({
+      isEmailValid: false,
+      accessToken: null,
+      msg,
+    });
   }
   const newUser = new User({
     name,
@@ -21,7 +25,10 @@ const registerUser = async (req, res) => {
   if (process.env.NODE_ENV != "test") {
     try {
       await newUser.save();
-      return res.status(200).send("user created successfully");
+      return res.status(200).send({
+        isEmailValid: true,
+        msg,
+      });
     } catch (error) {
       console.log(error);
       return res.status(400).send(error);
