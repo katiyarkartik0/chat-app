@@ -1,18 +1,27 @@
 import React from "react";
 import "./Chat.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedChat } from "../../../../store/slices/chatSlice";
+import { getSelectedChat, getUserData } from "helpers/selectors";
+import { setSelectedChat } from "store/slices/chatSlice";
+// import { setSelectedChat } from "../../../../store/slices/chatSlice";
+// import { getSelectedChat } from "../../../../helpers/selectors";
 
 const Chat = ({ chat = {} }) => {
-  const userData = useSelector((state) => state.auth.userData);
+  const userData = useSelector(getUserData);
   const dispatch = useDispatch();
+  const selectedChat = useSelector(getSelectedChat);
 
   const handleClick = () => {
     dispatch(setSelectedChat(chat));
   };
 
   return (
-    <button className="clickable-tab" onClick={handleClick}>
+    <button
+      className={`clickable-tab${
+        selectedChat && selectedChat._id == chat._id ? "-selectedChat" : ""
+      }`}
+      onClick={handleClick}
+    >
       <div className="primary-text">
         {chat.isGroupChat
           ? chat.chatName

@@ -38,7 +38,7 @@ mongoose
       console.log("listening to post 5000")
     );
     const io = new Server(server, {
-      pingTimeout: 3600000,
+      // pingTimeout: 3600000,
       cors: {
         origin: "http://localhost:3000",
       },
@@ -57,6 +57,7 @@ mongoose
 
       const onNewMessage = (newMessageRecieved) => {
         const { chat } = newMessageRecieved;
+        console.log(newMessageRecieved)
         if (!chat.users) {
           return console.log("chat.users not defined");
         }
@@ -75,7 +76,6 @@ mongoose
 
       socket.on("new message", onNewMessage);
 
-      socket.off("setup", onSetup);
     });
   })
   .catch((error) => console.log(error));

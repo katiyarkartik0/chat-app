@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import "./LoginForm.css";
-import { emailValidator } from "../../../helpers/validator";
-import { authRequest } from "../../../api/auth";
-import { useDispatch } from "react-redux";
-import { setLogin } from "../../../store/slices/authSlice";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { setSelectedChat } from "../../../store/slices/chatSlice";
+import { useDispatch } from "react-redux";
+
+import { authRequest } from "api/auth";
+import { setLogin } from "store/slices/authSlice";
+
+import "./LoginForm.css";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -47,7 +47,6 @@ const LoginForm = () => {
       return;
     }
     dispatch(setLogin({ accessToken, userData }));
-    dispatch(setSelectedChat(null));
     navigate("/chat");
   };
 

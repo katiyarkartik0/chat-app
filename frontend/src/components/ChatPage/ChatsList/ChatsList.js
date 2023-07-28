@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { chatRequest } from "../../../api/chat";
 import { useDispatch, useSelector } from "react-redux";
-import Chat from "./Chat/Chat";
+
+import Chat from "components/ChatPage/ChatsList/Chat/Chat";
+import { setAllChats } from "store/slices/chatSlice";
+import { chatRequest } from "api/chat";
+
+import { Modal } from "utils/ModalComponent/Modal";
+import { getAccessToken, getAllChats, getUserData } from "helpers/selectors";
+
 import "./ChatList.css";
-import { setAllChats } from "../../../store/slices/chatSlice";
 
 const ChatsList = () => {
-  const accessToken = useSelector((state) => state.auth.accessToken);
-  const userData = useSelector((state) => state.auth.userData);
+  const accessToken = useSelector(getAccessToken);
+  const userData = useSelector(getUserData);
+  const allChats = useSelector(getAllChats);
   const dispatch = useDispatch();
-  const chats = useSelector((state) => state.chats.allChats);
+  const [rooms, setRooms] = useState([]);
+  const [oneOnOnechats, setOneOnOneChats] = useState([]);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -24,22 +32,40 @@ const ChatsList = () => {
       }
     };
     fetchChats();
-  }, [accessToken, userData]);
+  }, [accessToken, userData, dispatch]);
 
-  const rooms = [];
-  const oneOnOnechats = chats.map((chat) => {
-    if (!chat.isGroupChat) {
-      return <Chat chat={chat} key={chat._id} />;
-    } else {
-      rooms.push(<Chat chat={chat} key={chat._id} />);
-    }
-  });
+  useEffect(() => {
+    let oneOnOnechatsList = [];
+    let roomsList = [];
+    allChats.forEach((chat) => {
+      if (!chat.isGroupChat) {
+        oneOnOnechatsList = [
+          ...oneOnOnechatsList,
+          <Chat chat={chat} key={chat._id} />,
+        ];
+      } else {
+        roomsList = [...roomsList, <Chat chat={chat} key={chat._id} />];
+      }
+    });
+    setOneOnOneChats(oneOnOnechatsList);
+    setRooms(roomsList);
+  }, [allChats]);
+
+  const toggleModal = () => {
+    setIsOpenModal(!isOpenModal);
+  };
 
   return (
     <div className="chats-list-container">
+      {isOpenModal && <Modal toggleModal={toggleModal} />}
+
       <div className="room-list-header">
         <h2>ROOMS</h2>
-        <button type="submit" className="create-a-room-button">
+        <button
+          type="click"
+          className="create-a-room-button"
+          onClick={toggleModal}
+        >
           Create a room
         </button>
       </div>

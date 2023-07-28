@@ -11,8 +11,11 @@ const searchSlice = createSlice({
     setSearchedChatsAndUsers: (state, action) => {
       state.searchedChatsAndUsers = action.payload;
     },
+    setSearchToDefault:(state,action)=>{
+      state.searchedChatsAndUsers = null;
+    }
   },
 });
 
-export const { setSearchedChatsAndUsers } = searchSlice.actions;
+export const { setSearchedChatsAndUsers,setSearchToDefault } = searchSlice.actions;
 export default searchSlice.reducer;

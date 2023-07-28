@@ -1,11 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
+import { addToAllChats, setSelectedChat } from "store/slices/chatSlice";
+import { chatRequest } from "api/chat";
+import { getAccessToken, getAllChats } from "helpers/selectors";
+
 import "./SearchResult.css";
-import { setSelectedChat } from "../../../../store/slices/chatSlice";
-import { chatRequest } from "../../../../api/chat";
 
 const SearchResult = ({ searchItem }) => {
   const dispatch = useDispatch();
-  const accessToken = useSelector((state) => state.auth.accessToken);
+  const accessToken = useSelector(getAccessToken);
+  const allChats = useSelector(getAllChats);
+
   const handleClick = async () => {
     if (!searchItem.isGroupChat) {
       const res = await chatRequest({
@@ -17,11 +21,32 @@ const SearchResult = ({ searchItem }) => {
         },
         body: JSON.stringify({ recieverUserId: searchItem._id }),
       });
-      console.log(res);
       if (res.ok) {
         const response = await res.json();
-        console.log(response)
         dispatch(setSelectedChat(response));
+        const newChat = allChats.find((chat) => chat._id === response._id);
+        if (!newChat) {
+          dispatch(addToAllChats(response));
+        }
+      }
+    }
+    if (searchItem.isGroupChat) {
+      const res = await chatRequest({
+        attempt: "accessRoom",
+        method: "POST",
+        headers: {
+          authorization: `JWT ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ roomName: searchItem.chatName }),
+      });
+      if (res.ok) {
+        const response = await res.json();
+        dispatch(setSelectedChat(response));
+        const newChat = allChats.find((chat) => chat._id === response._id);
+        if (!newChat) {
+          dispatch(addToAllChats(response));
+        }
       }
     }
   };

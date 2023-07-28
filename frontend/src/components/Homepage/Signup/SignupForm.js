@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { authRequest } from "api/auth";
+
 import "./SignupForm.css";
-import { authRequest } from "../../../api/auth";
 
 const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);

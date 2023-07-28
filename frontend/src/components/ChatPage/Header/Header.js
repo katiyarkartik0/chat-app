@@ -1,24 +1,31 @@
 import React, { useState } from "react";
-import "./Header.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setLogout } from "../../../store/slices/authSlice";
 import { useNavigate } from "react-router-dom";
-import { userRequest } from "../../../api/user";
-import { chatRequest } from "../../../api/chat";
-import { setSearchedChatsAndUsers } from "../../../store/slices/searchSlice";
+
+import { setLogout } from "store/slices/authSlice";
+import { setSearchToDefault, setSearchedChatsAndUsers } from "store/slices/searchSlice";
+import { userRequest } from "api/user";
+import { chatRequest } from "api/chat";
+
+import { getAccessToken } from "helpers/selectors";
+
+import "./Header.css";
+import { setChatsToDefault } from "store/slices/chatSlice";
 
 const Header = ({ setShowSideDrawer }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const accessToken = useSelector((state) => state.auth.accessToken);
+  const accessToken = useSelector(getAccessToken);
   const handleToggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
 
   const handleLogout = () => {
     dispatch(setLogout());
+    dispatch(setChatsToDefault());
+    dispatch(setSearchToDefault());
     navigate("/");
   };
 
@@ -26,33 +33,33 @@ const Header = ({ setShowSideDrawer }) => {
     setSearch(e.target.value);
   };
 
-  const handleSearchSubmit = async (e) => {
+  const handleSearchSubmit = async(e) => {
     e.preventDefault();
     let searchResults = [];
-    const res = await userRequest({
+    await userRequest({
       attempt: "search",
       method: "GET",
       headers: { authorization: `JWT ${accessToken}` },
       params: `?user=${search}`,
+    }).then(async (res) => {
+      if (res.ok) {
+        const searchResult = await res.json();
+        searchResults = [...searchResults, ...searchResult];
+      }
     });
-    console.log(res);
-    if (res.ok) {
-      const response = await res.json();
-      searchResults = [...searchResults, ...response];
-      console.log(response);
-    }
 
-    const res2 = await chatRequest({
+    await chatRequest({
       attempt: "search",
       method: "GET",
       headers: { authorization: `JWT ${accessToken}` },
       params: `?chatName=${search}`,
+    }).then(async (res) => {
+      if (res.ok) {
+        const searchResult = await res.json();
+        searchResults = [...searchResults, ...searchResult];
+      }
     });
-    if (res2.ok) {
-      const response = await res2.json();
-      searchResults = [...searchResults, ...response];
-      console.log(response);
-    }
+
     dispatch(setSearchedChatsAndUsers(searchResults));
     setShowSideDrawer(true);
   };

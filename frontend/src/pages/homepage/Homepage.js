@@ -1,30 +1,32 @@
 import { useState } from "react";
+
+import SignupForm from "components/Homepage/Signup/SignupForm";
+import LoginForm from "components/Homepage/Login/LoginForm";
+
 import "./Homepage.css";
-import LoginForm from "../../components/Homepage/Login/LoginForm";
-import SignupForm from "../../components/Homepage/Signup/SignupForm";
 
 export const HomePage = () => {
   const [isLogin, setIsLogin] = useState(true);
 
-  const handleToggle = () => {
+  const toggleForm = () => {
     setIsLogin((prevState) => !prevState);
   };
 
   return (
-    <div className="container">
+    <div className="form-container">
       <div className="form-box">
         <div className="button-box">
           <button
             type="button"
             className={`toggle-btn ${isLogin ? "active" : ""}`}
-            onClick={handleToggle}
+            onClick={toggleForm}
           >
             Log In
           </button>
           <button
             type="button"
             className={`toggle-btn ${isLogin ? "" : "active"}`}
-            onClick={handleToggle}
+            onClick={toggleForm}
           >
             Sign Up
           </button>

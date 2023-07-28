@@ -6,8 +6,8 @@ const accessChats = async (req, res) => {
     return res.status(403).send(req.msg);
   }
   const { recieverUserId } = req.body;
-  if(!recieverUserId){
-    return res.status(400).json({msg:"recieved user id is invalid"})
+  if (!recieverUserId) {
+    return res.status(400).json({ msg: "recieved user id is invalid" });
   }
   const userId = req.id;
 
@@ -105,6 +105,58 @@ const createRoom = async (req, res) => {
   res.status(200).json(createdChat);
 };
 
+const accessRoom = async (req, res) => {
+  if (req.verified == false) {
+    return res.status(403).send(req.msg);
+  }
+
+  const { roomName } = req.body;
+  const userId = req.id;
+
+  if (!userId) {
+    return res.status(400).send("UserId param not sent with request");
+  }
+
+  let isChat = await Chat.find({
+    isGroupChat: true,
+    chatName: roomName,
+  })
+    .populate("users", "-password")
+    .populate("latestMessage");
+
+  isChat = await User.populate(isChat, {
+    path: "latestMessage.sender",
+    select: "name email",
+  });
+
+  const isUserExistInRoom = isChat[0].users.find((user) => user._id == userId);
+
+  if (isUserExistInRoom) {
+    return res.status(200).send(isChat[0]);
+  }
+
+  await Chat.findOneAndUpdate(
+    {
+      isGroupChat: true,
+      chatName: roomName,
+    },
+    { $push: { users: userId } }
+  );
+
+  isChat = await Chat.find({
+    isGroupChat: true,
+    chatName: roomName,
+  })
+    .populate("users", "-password")
+    .populate("latestMessage");
+
+  isChat = await User.populate(isChat, {
+    path: "latestMessage.sender",
+    select: "name email",
+  });
+
+  return res.status(200).send(isChat[0]);
+};
 const searchChats = async (req, res) => {
   if (req.verified == false) {
     return res.status(403).send(req.msg);
@@ -132,4 +184,10 @@ const searchChats = async (req, res) => {
   }
 };
 
-module.exports = { accessChats, fetchChats, searchChats, createRoom };
+module.exports = {
+  accessChats,
+  fetchChats,
+  searchChats,
+  createRoom,
+  accessRoom,
+};

@@ -1,31 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
-import "./ChatPage.css"
-import Header from '../../components/ChatPage/Header/Header';
-import ChatBox from '../../components/ChatPage/ChatBox/ChatBox';
-import SideDrawer from '../../components/ChatPage/SideDrawer/SideDrawer';
-import ChatsList from '../../components/ChatPage/ChatsList/ChatsList';
+import Header from "components/ChatPage/Header/Header";
+import ChatsList from "components/ChatPage/ChatsList/ChatsList";
+import ChatBox from "components/ChatPage/ChatBox/ChatBox";
+import SideDrawer from "components/ChatPage/SideDrawer/SideDrawer";
+import UnauthorizedPage from "pages/unauthorizedPage/UnauthorizedPage";
+
+import { getAccessToken } from "helpers/selectors";
+
+import "./ChatPage.css";
 
 const ChatPage = () => {
-  // You can manage state and logic for the side drawer here if needed
   const [showSideDrawer, setShowSideDrawer] = useState(false);
+  const accessToken = useSelector(getAccessToken);
 
-  return (
-    <div className="chat-page">
-      <Header setShowSideDrawer={setShowSideDrawer}/>
-      <div className="chat-container ">
-        <div className="friends-list">
-          <ChatsList />
+  if(accessToken){
+    return (
+      <div className="chat-page">
+        <Header setShowSideDrawer={setShowSideDrawer} />
+        <div className="chat-container ">
+          <div className="friends-list">
+            <ChatsList />
+          </div>
+          <div className="chat-box">
+            <ChatBox />
+          </div>
         </div>
-        <div className="chat-box">
-          <ChatBox />
-        </div>
+        {
+          <SideDrawer
+            showSideDrawer={showSideDrawer}
+            setShowSideDrawer={setShowSideDrawer}
+          />
+        }
       </div>
-      {/* Conditionally render the SideDrawer component based on state */}
-      {<SideDrawer showSideDrawer={showSideDrawer} setShowSideDrawer={setShowSideDrawer}/>}
-      {/* <SideDrawer /> */}
-    </div>
-  );
+    );
+  }
+  return <UnauthorizedPage/>
+
+ 
 };
 
 export default ChatPage;

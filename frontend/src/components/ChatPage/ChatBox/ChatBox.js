@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from "react";
-import "./ChatBox.css";
 import { useSelector } from "react-redux";
-import { messageRequest } from "../../../api/message";
-import Message from "../Message/Message";
-import { socket } from "../../../socket";
+
+import { socket } from "components/../socket";
+import { messageRequest } from "api/message";
+import Message from "components/ChatPage/Message/Message";
+
+import { Loader } from "utils/Loader/Loader";
+import SelectChatOrRoomSvg from "utils/SelectChatOrRoomSvg";
+import { getSelectedChat } from "helpers/selectors";
+
+import "./ChatBox.css";
 
 const ChatBox = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [socketConnected, setSocketConnected] = useState(false);
-  const selectedChat = useSelector((state) => state.chats.selectedChat);
+  const selectedChat = useSelector(getSelectedChat);
   const accessToken = useSelector((state) => state.auth.accessToken);
   const userData = useSelector((state) => state.auth.userData);
+  const [isMessageSending, setIsMessageSending] = useState(false);
 
   useEffect(() => {
     const fetchAllMessages = async () => {
@@ -21,10 +28,8 @@ const ChatBox = () => {
         method: "GET",
         params: selectedChat?._id,
       });
-      console.log(res);
       if (res.ok) {
         const response = await res.json();
-        console.log(response);
         setMessages(response);
       }
     };
@@ -33,6 +38,7 @@ const ChatBox = () => {
       socket.emit("join chat", selectedChat._id);
     }
   }, [selectedChat]);
+
 
   useEffect(() => {
     const onConnect = () => setSocketConnected(true);
@@ -44,10 +50,12 @@ const ChatBox = () => {
       console.log("DISCONNECTING CONNECTION EVENT");
       socket.off("connected", onConnect);
     };
-  }, []);
+  }, [userData]);
 
   useEffect(() => {
     const onMessageRecieved = (newMessageRecieved) => {
+      console.log(newMessageRecieved)
+
       if (!selectedChat || selectedChat._id !== newMessageRecieved.chat._id) {
         //notify
       } else {
@@ -56,11 +64,6 @@ const ChatBox = () => {
     };
 
     socket.on("message recieved", onMessageRecieved);
-
-    return () => {
-      console.log("DISCONNECTING MESSAGE EVENT");
-      socket.off("message recieved", onMessageRecieved);
-    };
   });
 
   const handleText = (e) => {
@@ -69,6 +72,7 @@ const ChatBox = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsMessageSending(true);
     const body = JSON.stringify({
       content: newMessage,
       chatId: selectedChat._id,
@@ -84,34 +88,43 @@ const ChatBox = () => {
       body,
     });
 
-    console.log(res);
     if (res.ok) {
       const response = await res.json();
-      console.log(response);
       setMessages([...messages, response]);
       setNewMessage("");
       socket.emit("new message", response);
     }
+    setIsMessageSending(false);
   };
 
   return (
     <div className="chat-box-container">
-      <div className="messages">
-        {messages.map((message) => (
-          <Message message={message} key={message._id} />
-        ))}
-      </div>
-      <form className="chat-input" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Type your message..."
-          onChange={handleText}
-          value={newMessage}
-        />
-        <button type="submit" className="send-button">
-          Send
-        </button>
-      </form>
+      {selectedChat ? (
+        <>
+          <div className="messages">
+            {messages.map((message) => (
+              <Message message={message} key={message._id} />
+            ))}
+          </div>
+          <form className="chat-input" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Type your message..."
+              onChange={handleText}
+              value={newMessage}
+            />
+            {isMessageSending ? (
+              <Loader />
+            ) : (
+              <button type="submit" className="send-button">
+                Send
+              </button>
+            )}
+          </form>
+        </>
+      ) : (
+        <SelectChatOrRoomSvg />
+      )}
     </div>
   );
 };

@@ -6,7 +6,6 @@ const sendMessage = async (req, res) => {
     return res.status(403).send(req.msg);
   }
   const userId = req.id;
-  console.log(req.body)
   const { content, chatId } = req.body;
 
   if (!content || !chatId) {
