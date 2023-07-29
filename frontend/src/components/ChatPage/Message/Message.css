@@ -9,20 +9,21 @@
   max-width: 60%;
   width: fit-content;
   min-width: 30%;
+  font-weight: 500;
 }
 
 .sent-by-user {
   margin-left: auto;
-  margin-right: 0;
+  margin-right: 10px;
   align-items: flex-end;
-  background-color: #dcf8c6;
+  background-color: #068FFF;
 }
 
 .sent-by-buddy {
-  margin-left: 0;
+  margin-right: 10px;
   margin-right: auto;
   align-items: flex-start;
-  background-color: #efefef;
+  background-color: #EEEEEE;
 }
 
 .name-sent-by-buddy {

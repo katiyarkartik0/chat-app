@@ -3,8 +3,6 @@ import "./Chat.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getSelectedChat, getUserData } from "helpers/selectors";
 import { setSelectedChat } from "store/slices/chatSlice";
-// import { setSelectedChat } from "../../../../store/slices/chatSlice";
-// import { getSelectedChat } from "../../../../helpers/selectors";
 
 const Chat = ({ chat = {} }) => {
   const userData = useSelector(getUserData);

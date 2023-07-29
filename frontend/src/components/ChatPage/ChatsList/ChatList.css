@@ -2,14 +2,26 @@
 .room-list-header{
   display: flex;
   justify-content: space-between;
-  align-items: center;
+}
+
+.chat-list-topic{
+  color: #EEEEEE;
+  font-size: medium;
+  margin-bottom: 5px;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: 900;
 }
 
 .chats-list-container {
-  background-color: #f7f7f7;
+  background-color: black;
   padding: 10px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chats-list-section{
+  overflow-y: auto;
+  height: 200px;
 }
 
 .chats-list-container h2 {
@@ -27,18 +39,4 @@
 .chats-list-container li {
   padding: 8px;
   border-bottom: 1px solid #ccc;
-}
-
-.create-a-room-button {
-  background-color: #4aaf3f;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.create-a-room-button:hover {
-  background-color: #067128;
 }

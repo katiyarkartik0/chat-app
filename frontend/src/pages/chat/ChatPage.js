@@ -15,6 +15,10 @@ const ChatPage = () => {
   const [showSideDrawer, setShowSideDrawer] = useState(false);
   const accessToken = useSelector(getAccessToken);
 
+  const toggleSideDrawer = () =>{
+    setShowSideDrawer((prev)=>!prev)
+  }
+
   if(accessToken){
     return (
       <div className="chat-page">
@@ -30,7 +34,7 @@ const ChatPage = () => {
         {
           <SideDrawer
             showSideDrawer={showSideDrawer}
-            setShowSideDrawer={setShowSideDrawer}
+            toggleSideDrawer={toggleSideDrawer}
           />
         }
       </div>

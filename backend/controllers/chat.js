@@ -157,14 +157,17 @@ const accessRoom = async (req, res) => {
 
   return res.status(200).send(isChat[0]);
 };
-const searchChats = async (req, res) => {
+const searchRooms = async (req, res) => {
   if (req.verified == false) {
     return res.status(403).send(req.msg);
   }
-  if (!req.query.chatName) {
-    return res.status(400).send({ msg: "query param not found" });
-  }
-  const keyword = { chatName: { $regex: req.query.chatName, $options: "i" } };
+  // if (!req.query.chatName) {
+    // return res.status(400).send({ msg: "query param not found" });
+  // }
+  const keyword = {
+    chatName: { $regex: req.query.chatName, $options: "i" },
+    isGroupChat: true,
+  };
 
   try {
     Chat.find(keyword)
@@ -187,7 +190,7 @@ const searchChats = async (req, res) => {
 module.exports = {
   accessChats,
   fetchChats,
-  searchChats,
+  searchRooms,
   createRoom,
   accessRoom,
 };

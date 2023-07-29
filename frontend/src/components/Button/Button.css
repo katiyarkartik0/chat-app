@@ -1,0 +1,21 @@
+.app-button-component {
+  background-color: #068FFF;
+  color: #EEEEEE;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.app-button-component:hover {
+  background-color: #4E4FEB;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .app-button-component {
+    flex-shrink: 0;
+    max-width: 100px;
+  }
+}

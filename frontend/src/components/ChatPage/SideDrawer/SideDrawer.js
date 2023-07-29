@@ -1,12 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import SearchResult from "components/ChatPage/Header/SearchResult/SearchResult";
 import { getSearchedChatsAndUsers } from "helpers/selectors";
 
 import "./SideDrawer.css";
+import ChatWidget from "components/ChatPage/ChatWidget/ChatWidget";
 
-const SideDrawer = ({ showSideDrawer, setShowSideDrawer }) => {
+const SideDrawer = ({ showSideDrawer, toggleSideDrawer }) => {
   const searchedChatsAndUsers = useSelector(getSearchedChatsAndUsers);
 
 
@@ -14,15 +14,15 @@ const SideDrawer = ({ showSideDrawer, setShowSideDrawer }) => {
     <div className={`side-drawer ${showSideDrawer ? "open" : ""}`}>
       <div className="header">
         <h3>People</h3>
-        <button className="close-btn" onClick={() => setShowSideDrawer(false)}>
+        <button className="close-btn" onClick={toggleSideDrawer}>
           &times;
         </button>
       </div>
-      <ul>
+      <div className="search-result-list">
         {searchedChatsAndUsers && searchedChatsAndUsers.map((searchItem) => (
-          <SearchResult searchItem={searchItem} key={searchItem._id} />
+          <ChatWidget chatItem={searchItem} key={searchItem._id} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

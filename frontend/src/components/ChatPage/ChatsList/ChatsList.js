@@ -9,6 +9,7 @@ import { Modal } from "utils/ModalComponent/Modal";
 import { getAccessToken, getAllChats, getUserData } from "helpers/selectors";
 
 import "./ChatList.css";
+import Button from "components/Button/Button";
 
 const ChatsList = () => {
   const accessToken = useSelector(getAccessToken);
@@ -54,26 +55,20 @@ const ChatsList = () => {
   const toggleModal = () => {
     setIsOpenModal(!isOpenModal);
   };
-
+debugger
   return (
     <div className="chats-list-container">
       {isOpenModal && <Modal toggleModal={toggleModal} />}
 
       <div className="room-list-header">
-        <h2>ROOMS</h2>
-        <button
-          type="click"
-          className="create-a-room-button"
-          onClick={toggleModal}
-        >
-          Create a room
-        </button>
+        <div className="chat-list-topic">ROOMS</div>
+        <Button type="click" onClickEvent={toggleModal} text="Create a room"/>
       </div>
       <br></br>
-      <ul>{rooms}</ul>
+      <div className="chats-list-section">{rooms}</div>
       <br></br>
-      <h2>Chats List</h2>
-      <ul>{oneOnOnechats}</ul>
+        <div className="chat-list-topic">Chats List</div>
+      <div className="chats-list-section">{oneOnOnechats}</div>
     </div>
   );
 };

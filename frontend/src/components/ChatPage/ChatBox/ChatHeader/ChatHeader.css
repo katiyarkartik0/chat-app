@@ -1,0 +1,76 @@
+/* ChatHeader.css */
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #4E4FEB;
+  padding: 10px;
+  color: white;
+}
+
+.dropdown-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+}
+
+.dots {
+  width: 4px;
+  height: 4px;
+  margin-bottom: 3px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.dropdown-list {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* display: none; */
+}
+
+.dropdown-list li {
+  padding: 8px 16px;
+}
+
+/* Media Queries for Responsiveness */
+
+/* For screens smaller than 600px (e.g., mobile phones) */
+@media (max-width: 600px) {
+  .chat-header {
+    flex-direction: column;
+  }
+
+  .dropdown-container {
+    margin-top: 10px;
+  }
+}
+
+/* For screens between 600px and 900px (e.g., tablets) */
+@media (min-width: 601px) and (max-width: 900px) {
+  .chat-header {
+    flex-direction: column;
+  }
+
+  .dropdown-container {
+    margin-top: 10px;
+  }
+
+  .dropdown-list {
+    right: -50px;
+  }
+}

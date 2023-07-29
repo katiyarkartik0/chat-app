@@ -3,15 +3,15 @@ import { addToAllChats, setSelectedChat } from "store/slices/chatSlice";
 import { chatRequest } from "api/chat";
 import { getAccessToken, getAllChats } from "helpers/selectors";
 
-import "./SearchResult.css";
+import "./ChatWidget.css";
 
-const SearchResult = ({ searchItem }) => {
+const ChatWidget = ({ chatItem }) => {
   const dispatch = useDispatch();
   const accessToken = useSelector(getAccessToken);
   const allChats = useSelector(getAllChats);
 
   const handleClick = async () => {
-    if (!searchItem.isGroupChat) {
+    if (!chatItem.isGroupChat) {
       const res = await chatRequest({
         attempt: "accessChats",
         method: "POST",
@@ -19,18 +19,18 @@ const SearchResult = ({ searchItem }) => {
           authorization: `JWT ${accessToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ recieverUserId: searchItem._id }),
+        body: JSON.stringify({ recieverUserId: chatItem._id }),
       });
       if (res.ok) {
         const response = await res.json();
         dispatch(setSelectedChat(response));
-        const newChat = allChats.find((chat) => chat._id === response._id);
+        const newChat = allChats.find((chat) => chat._id == response._id);
         if (!newChat) {
           dispatch(addToAllChats(response));
         }
       }
     }
-    if (searchItem.isGroupChat) {
+    if (chatItem.isGroupChat) {
       const res = await chatRequest({
         attempt: "accessRoom",
         method: "POST",
@@ -38,7 +38,7 @@ const SearchResult = ({ searchItem }) => {
           authorization: `JWT ${accessToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ roomName: searchItem.chatName }),
+        body: JSON.stringify({ roomName: chatItem.chatName }),
       });
       if (res.ok) {
         const response = await res.json();
@@ -54,14 +54,14 @@ const SearchResult = ({ searchItem }) => {
     <>
       <button className="clickable-tab" onClick={handleClick}>
         <div className="primary-text">
-          {searchItem.isGroupChat ? searchItem.chatName : searchItem.name}
+          {chatItem.isGroupChat ? chatItem.chatName : chatItem.name}
         </div>
         <div className="secondary-text">
-          {searchItem.isGroupChat ? "ROOM" : searchItem.email}
+          {chatItem.isGroupChat ? "ROOM" : chatItem.email}
         </div>
       </button>
     </>
   );
 };
 
-export default SearchResult;
+export default ChatWidget;

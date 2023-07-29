@@ -3,14 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { setLogout } from "store/slices/authSlice";
-import { setSearchToDefault, setSearchedChatsAndUsers } from "store/slices/searchSlice";
+import {
+  setSearchToDefault,
+  setSearchedChatsAndUsers,
+} from "store/slices/searchSlice";
 import { userRequest } from "api/user";
 import { chatRequest } from "api/chat";
 
-import { getAccessToken } from "helpers/selectors";
+import { getAccessToken, getUserData } from "helpers/selectors";
 
 import "./Header.css";
 import { setChatsToDefault } from "store/slices/chatSlice";
+import Button from "components/Button/Button";
 
 const Header = ({ setShowSideDrawer }) => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -18,6 +22,7 @@ const Header = ({ setShowSideDrawer }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const accessToken = useSelector(getAccessToken);
+  const userData = useSelector(getUserData);
   const handleToggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -33,7 +38,7 @@ const Header = ({ setShowSideDrawer }) => {
     setSearch(e.target.value);
   };
 
-  const handleSearchSubmit = async(e) => {
+  const handleSearchSubmit = async (e) => {
     e.preventDefault();
     let searchResults = [];
     await userRequest({
@@ -59,6 +64,7 @@ const Header = ({ setShowSideDrawer }) => {
         searchResults = [...searchResults, ...searchResult];
       }
     });
+    console.log(searchResults, "iouuuuuuu");
 
     dispatch(setSearchedChatsAndUsers(searchResults));
     setShowSideDrawer(true);
@@ -69,18 +75,19 @@ const Header = ({ setShowSideDrawer }) => {
       <form className="search-bar" onSubmit={handleSearchSubmit}>
         <input
           type="text"
-          placeholder="Search people"
+          placeholder="Search people or rooms"
           onChange={handleSearch}
           value={search}
         />
-        <button type="submit" className="search-button">
-          Search
-        </button>
+        <Button type="submit" text="Search" />
       </form>
       <div className="profile-dropdown">
-        <button className="dropdown-toggle-btn" onClick={handleToggleDropdown}>
-          Profile
-        </button>
+        <Button
+          type="click"
+          text={userData.name}
+          onClickEvent={handleToggleDropdown}
+        />
+
         {showDropdown && (
           <div className="dropdown-content">
             <button className="settings-btn">Settings</button>

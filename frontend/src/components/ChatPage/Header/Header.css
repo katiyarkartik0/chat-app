@@ -21,7 +21,7 @@
   border: none;
 }
 
-.search-button {
+/* .search-button {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -33,7 +33,7 @@
 
 .search-button:hover {
   background-color: #0056b3;
-}
+} */
 
 /**/
 .profile-dropdown {
@@ -83,10 +83,10 @@
     margin-right: 10px;
   }
 
-  .search-button {
+  /* .search-button {
     flex-shrink: 0;
     max-width: 100px;
-  }
+  } */
 
   .profile-dropdown {
     display: block;

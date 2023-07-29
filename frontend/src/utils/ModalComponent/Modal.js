@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAccessToken } from "helpers/selectors";
 import { addToAllChats } from "store/slices/chatSlice";
+import Button from "components/Button/Button";
 
 export const Modal = ({ toggleModal }) => {
   const [roomName, setRoomName] = useState("");
@@ -24,18 +25,18 @@ export const Modal = ({ toggleModal }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ roomName }),
-    }).then(async(res)=>{
+    }).then(async (res) => {
       const response = await res.json();
-      if(res.ok){
-        dispatch(addToAllChats(response))
+      if (res.ok) {
+        dispatch(addToAllChats(response));
         setRoomName("");
       }
-    })
+    });
   };
 
-  const handleRoomName = (e)=>{
-    setRoomName(e.target.value)
-  }
+  const handleRoomName = (e) => {
+    setRoomName(e.target.value);
+  };
 
   return createPortal(
     <>
@@ -43,7 +44,11 @@ export const Modal = ({ toggleModal }) => {
         <div className="modal-background" id="modalBackground">
           <div className="modal" id="modal">
             <div className="modal-content">
-              <span className="close-btn" id="closeModalBtn" onClick={handleClick}>
+              <span
+                className="close-btn"
+                id="closeModalBtn"
+                onClick={handleClick}
+              >
                 &times;
               </span>
               <form id="roomForm" onSubmit={handleSubmit}>
@@ -57,9 +62,7 @@ export const Modal = ({ toggleModal }) => {
                   value={roomName}
                   onChange={handleRoomName}
                 />
-                <button className="modal-submit-button" type="submit">
-                  Submit
-                </button>
+                <Button type="submit" text="Submit" />
               </form>
             </div>
           </div>
