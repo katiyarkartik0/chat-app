@@ -103,4 +103,4 @@ const ChatBox = () => {
   );
 };
 
-export default ChatBox;
+export default React.memo(ChatBox);

@@ -5,12 +5,15 @@ import { getAccessToken, getAllChats } from "helpers/selectors";
 
 import "./ChatWidget.css";
 
-const ChatWidget = ({ chatItem }) => {
+const ChatWidget = ({ chatItem,isClickable }) => {
   const dispatch = useDispatch();
   const accessToken = useSelector(getAccessToken);
   const allChats = useSelector(getAllChats);
 
   const handleClick = async () => {
+    if(!isClickable){
+      return;
+    }
     if (!chatItem.isGroupChat) {
       const res = await chatRequest({
         attempt: "accessChats",

@@ -55,7 +55,6 @@ const ChatsList = () => {
   const toggleModal = () => {
     setIsOpenModal(!isOpenModal);
   };
-debugger
   return (
     <div className="chats-list-container">
       {isOpenModal && <Modal toggleModal={toggleModal} />}

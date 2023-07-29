@@ -6,7 +6,7 @@
   width: 300px;
   height: 500px;
   background-color: #fff;
-  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 8px 0 16px rgba(0, 0, 0, 0.2);
   transition: left 0.3s ease;
   border-radius: 4px;
   padding: 10px;

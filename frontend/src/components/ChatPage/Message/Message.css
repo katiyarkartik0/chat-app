@@ -10,20 +10,25 @@
   width: fit-content;
   min-width: 30%;
   font-weight: 500;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.627);
+
 }
 
 .sent-by-user {
   margin-left: auto;
   margin-right: 10px;
   align-items: flex-end;
-  background-color: #068FFF;
+  background-color: #128C7E;
+  color: white;
 }
 
 .sent-by-buddy {
   margin-right: 10px;
   margin-right: auto;
   align-items: flex-start;
-  background-color: #EEEEEE;
+  background-color: #075E54;
+  color: white;
+
 }
 
 .name-sent-by-buddy {

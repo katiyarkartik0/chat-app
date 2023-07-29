@@ -3,14 +3,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #4E4FEB;
+  background-color: #075E54;
   padding: 10px;
   color: white;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.627);
+  border-radius: 5px;
 }
 
 .dropdown-container {
   position: relative;
   cursor: pointer;
+
 }
 
 .dropdown-button {
@@ -39,8 +42,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  /* display: none; */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .dropdown-list li {
