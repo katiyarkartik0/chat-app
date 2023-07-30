@@ -7,9 +7,16 @@ import { getAccessToken } from "helpers/selectors";
 import { addToAllChats } from "store/slices/chatSlice";
 import Button from "components/Button/Button";
 
+const defaultRoomStatus = {
+  showRoomStatus: false,
+  created: false,
+  msg: "",
+};
+
 export const Modal = ({ toggleModal }) => {
   const [roomName, setRoomName] = useState("");
   const accessToken = useSelector(getAccessToken);
+  const [roomStatus, setRoomStatus] = useState(defaultRoomStatus);
   const dispatch = useDispatch();
   const handleClick = () => {
     toggleModal();
@@ -29,13 +36,43 @@ export const Modal = ({ toggleModal }) => {
       const response = await res.json();
       if (res.ok) {
         dispatch(addToAllChats(response));
+        setRoomStatus({
+          showRoomStatus: true,
+          created: true,
+          msg: "Room has been successfully created",
+        });
         setRoomName("");
+        return;
+      } else {
+        setRoomStatus({
+          showRoomStatus: true,
+          created: false,
+          msg: response.msg,
+        });
+
+        setTimeout(() => {
+          setRoomStatus(defaultRoomStatus);
+        }, 3000);
       }
     });
   };
 
   const handleRoomName = (e) => {
     setRoomName(e.target.value);
+  };
+
+  const getModalStatusClassName = () => {
+    const { created, showRoomStatus, msg } = roomStatus;
+    let className = "";
+    if (created) {
+      className += "success-message";
+    } else {
+      className += "failed-message";
+    }
+    if (showRoomStatus) {
+      className += " active";
+    }
+    return className;
   };
 
   return createPortal(
@@ -64,6 +101,12 @@ export const Modal = ({ toggleModal }) => {
                 />
                 <Button type="submit" text="Submit" />
               </form>
+              <br></br>
+              {
+                <div className={getModalStatusClassName()}>
+                  {roomStatus.msg}
+                </div>
+              }
             </div>
           </div>
         </div>

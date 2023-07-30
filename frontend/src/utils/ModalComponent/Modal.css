@@ -50,7 +50,7 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  font-size: 20px;
+  font-size: 30px;
   cursor: pointer;
 }
 
@@ -67,6 +67,33 @@
   font-size: 16px;
   margin-bottom: 10px;
   border-radius: 2px;
+}
+
+.success-message {
+  background-color: #4caf50;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  border-radius: 4px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.failed-message{
+  background-color: #af614c;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  border-radius: 4px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.success-message.active,.failed-message.active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Responsive styles */

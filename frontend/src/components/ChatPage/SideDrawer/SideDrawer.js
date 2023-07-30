@@ -13,14 +13,14 @@ const SideDrawer = ({ showSideDrawer, toggleSideDrawer }) => {
   return (
     <div className={`side-drawer ${showSideDrawer ? "open" : ""}`}>
       <div className="header">
-        <h3>People</h3>
+        <h3>People And Rooms</h3>
         <button className="close-btn" onClick={toggleSideDrawer}>
           &times;
         </button>
       </div>
       <div className="search-result-list">
         {searchedChatsAndUsers && searchedChatsAndUsers.map((searchItem) => (
-          <ChatWidget chatItem={searchItem} key={searchItem._id} />
+          <ChatWidget chatItem={searchItem} key={searchItem._id} isClickable={true} />
         ))}
       </div>
     </div>

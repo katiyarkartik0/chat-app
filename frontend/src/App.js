@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { HomePage } from "./pages/homepage/Homepage";
 import ChatPage from "./pages/chat/ChatPage";
+import UnauthorizedPage from "pages/unauthorizedPage/UnauthorizedPage";
 
 function App() {
 
@@ -9,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/chat" element={<ChatPage/>}></Route>
+        <Route path="*" element={<UnauthorizedPage/>}/>
       </Routes>
     </BrowserRouter>
   );
