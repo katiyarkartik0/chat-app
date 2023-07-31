@@ -5,11 +5,23 @@ body {
   background-color: #f9f9f9;
 }
 
+.form-header{
+  background-color: #fff;
+  width: 440px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.1);
+
+}
+
 .form-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  min-height: 85vh;
 }
 
 .form-box {
@@ -46,6 +58,9 @@ body {
 
 /* For screens smaller than 768px */
 @media screen and (max-width: 768px) {
+  .form-header{
+    width: 360px;
+  }
   .form-box {
     width: 90%;
     max-width: 360px;
@@ -58,6 +73,9 @@ body {
 
 /* For screens smaller than 480px */
 @media screen and (max-width: 480px) {
+  .form-header{
+    width: 300px;
+  }
   .form-box {
     width: 90%;
     max-width: 300px;

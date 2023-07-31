@@ -4,9 +4,7 @@ import {
   FaLinkedin,
   FaInstagram,
   FaTwitter,
-  FaReact,
-  FaNode,
-  FaNodeJs,
+  FaGithub,
 } from "react-icons/fa";
 import "./Footer.css";
 import mernLogo from "utils/MERN-logo.png";
@@ -17,6 +15,7 @@ const Footer = () => {
         <div className="made-with">
           Made with <img  src={mernLogo} className='mern_logo' alt="fireSpot"/> by Kartik Katiyar
         </div>
+        <br></br>
         <div className="social-icons">
           <a
             href="mailto:your.email@gmail.com"
@@ -45,6 +44,13 @@ const Footer = () => {
             rel="noopener noreferrer"
           >
             <FaTwitter className="icon" />
+          </a>
+          <a
+            href="https://twitter.com/your-twitter"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaGithub className="icon" />
           </a>
         </div>
       </div>

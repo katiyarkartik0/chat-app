@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { HomePage } from "./pages/homepage/Homepage";
 import ChatPage from "./pages/chat/ChatPage";
 import UnauthorizedPage from "pages/unauthorizedPage/UnauthorizedPage";
-
+import Footer from "Footer/Footer";
 function App() {
 
   return (

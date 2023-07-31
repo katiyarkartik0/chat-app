@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { authRequest } from "api/auth";
 
 import "./SignupForm.css";
+import Button from "components/Button/Button";
 
 const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -110,9 +111,7 @@ const SignupForm = () => {
 
       {/* <label htmlFor="profilePicture" className="uploadButtonLabel">Upload a Profile Picture</label>
       <input type="file" className="input-field-file" id="profilePicture" accept="image/*" placeholder="" required /> */}
-      <button type="submit" className="submit-btn">
-        Sign Up
-      </button>
+      <Button type="submit" text="Sign Up"/>
     </form>
   );
 };

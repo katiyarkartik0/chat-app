@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { authRequest } from "api/auth";
+import { userLogin } from "api/auth";
 import { setLogin } from "store/slices/authSlice";
 
 import "./LoginForm.css";
+import Button from "components/Button/Button";
+import { Loader } from "utils/Loader/Loader";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,6 +15,7 @@ const LoginForm = () => {
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,25 +32,28 @@ const LoginForm = () => {
 
   const hanldeSubmit = async (e) => {
     e.preventDefault();
-    const res = await authRequest({
-      attempt: "login",
-      body: JSON.stringify(userCredentials),
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    });
+    setIsLoading(true);
 
-    const { isEmailValid, isPasswordValid, userData, msg, accessToken } =
-      await res.json();
-    if (!isEmailValid) {
-      setErrors((prev) => ({ ...prev, email: msg }));
-      return;
-    }
-    if (!isPasswordValid) {
-      setErrors((prev) => ({ ...prev, password: msg }));
-      return;
-    }
-    dispatch(setLogin({ accessToken, userData }));
-    navigate("/chat");
+    await userLogin(userCredentials)
+      .then(async (res) => {
+        const { isEmailValid, isPasswordValid, userData, msg, accessToken } =
+          await res.json();
+        if (!isEmailValid) {
+          setErrors((prev) => ({ ...prev, email: msg }));
+          return;
+        }
+        if (!isPasswordValid) {
+          setErrors((prev) => ({ ...prev, password: msg }));
+          return;
+        }
+        dispatch(setLogin({ accessToken, userData }));
+        navigate("/chat");
+      })
+      .catch((error) => {
+        alert(error);
+      });
+      setIsLoading(false);
+
   };
 
   return (
@@ -61,6 +67,7 @@ const LoginForm = () => {
         required
       />
       {errors.email && <span className="input-error">{errors.email}</span>}
+      <br></br>
       <div className="password-container">
         <input
           onChange={handlePassword}
@@ -77,21 +84,25 @@ const LoginForm = () => {
       {errors.password && (
         <span className="input-error">{errors.password}</span>
       )}
-      <button type="submit" className="submit-btn">
-        Log In
-      </button>
-      <button
+            <br></br>
+
+      {!isLoading && (
+        <Button type="submit" text="Log In" style={{ width: "100%" }} />
+      )}
+      {isLoading && <Loader />}
+      <br></br>
+      {/* <br></br> */}
+      <Button
         type="button"
-        onClick={() =>
+        onClickEvent={() =>
           setUserCredentials({
             email: "katiyarkartik0@gmail.com",
             password: "qwerty",
           })
         }
-        className="guest-btn"
-      >
-        Generate Guest User Credentials
-      </button>
+        text="Generate User Credentials"
+        style={{ width: "100%" }} 
+      />
     </form>
   );
 };

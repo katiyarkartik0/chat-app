@@ -4,6 +4,11 @@ import SignupForm from "components/Homepage/Signup/SignupForm";
 import LoginForm from "components/Homepage/Login/LoginForm";
 
 import "./Homepage.css";
+import Button from "components/Button/Button";
+import logo from "utils/logo.png";
+
+const activeButtonStyles = { "background-color": "teal" };
+const inActiveButtonStyles = { "background-color": "#fff", color: "black" };
 
 export const HomePage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -13,26 +18,29 @@ export const HomePage = () => {
   };
 
   return (
-    <div className="form-container">
-      <div className="form-box">
-        <div className="button-box">
-          <button
-            type="button"
-            className={`toggle-btn ${isLogin ? "active" : ""}`}
-            onClick={toggleForm}
-          >
-            Log In
-          </button>
-          <button
-            type="button"
-            className={`toggle-btn ${isLogin ? "" : "active"}`}
-            onClick={toggleForm}
-          >
-            Sign Up
-          </button>
+    <>
+      <div className="form-container">
+        <div className="form-header">
+          <img src={logo} alt="fireSpot" width="250px" />{" "}
         </div>
-        {isLogin ? <LoginForm /> : <SignupForm />}
+        <div className="form-box">
+          <div className="button-box">
+            <Button
+              type="click"
+              onClickEvent={toggleForm}
+              style={isLogin ? activeButtonStyles : inActiveButtonStyles}
+              text="Already have an account"
+            />
+            <Button
+              type="click"
+              onClickEvent={toggleForm}
+              style={!isLogin ? activeButtonStyles : inActiveButtonStyles}
+              text="Register"
+            />
+          </div>
+          {isLogin ? <LoginForm /> : <SignupForm />}
+        </div>
       </div>
-    </div>
+    </>
   );
 };

@@ -15,14 +15,6 @@
 .chat-input {
   margin-top: 10px;
 }
-
-.chat-input input[type="text"] {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
 .send-button {
   background-color: #007bff;
   color: #fff;

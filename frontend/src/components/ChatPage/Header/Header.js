@@ -41,6 +41,8 @@ const Header = ({ setShowSideDrawer }) => {
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
     let searchResults = [];
+    setShowSideDrawer(true);
+
     await userRequest({
       attempt: "search",
       method: "GET",
@@ -67,7 +69,6 @@ const Header = ({ setShowSideDrawer }) => {
     console.log(searchResults, "iouuuuuuu");
 
     dispatch(setSearchedChatsAndUsers(searchResults));
-    setShowSideDrawer(true);
   };
 
   return (

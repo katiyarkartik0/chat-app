@@ -11,12 +11,5 @@
 
 .app-button-component:hover {
   background-color: #128C7E;
-  font-weight: bold;
-}
-
-@media (max-width: 768px) {
-  .app-button-component {
-    flex-shrink: 0;
-    max-width: 100px;
-  }
+  /* font-weight: bold; */
 }

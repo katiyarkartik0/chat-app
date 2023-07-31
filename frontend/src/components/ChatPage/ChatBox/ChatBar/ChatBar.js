@@ -50,6 +50,7 @@ const ChatBar = ({messages, setMessages }) => {
         placeholder="Type your message..."
         onChange={handleText}
         value={newMessage}
+        className="message-input"
       />
       {isMessageSending ? <Loader /> : <Button type="submit" text="Send" />}
     </form>
