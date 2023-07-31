@@ -2,19 +2,17 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { setLogout } from "store/slices/authSlice";
 import {
-  setSearchToDefault,
   setSearchedChatsAndUsers,
 } from "store/slices/searchSlice";
 import { userRequest } from "api/user";
-import { chatRequest } from "api/chat";
+import { searchRooms } from "api/chat";
 
 import { getAccessToken, getUserData } from "helpers/selectors";
 
 import "./Header.css";
-import { setChatsToDefault } from "store/slices/chatSlice";
 import Button from "components/Button/Button";
+import { persistor } from "index";
 
 const Header = ({ setShowSideDrawer }) => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -28,9 +26,7 @@ const Header = ({ setShowSideDrawer }) => {
   };
 
   const handleLogout = () => {
-    dispatch(setLogout());
-    dispatch(setChatsToDefault());
-    dispatch(setSearchToDefault());
+    persistor.purge();
     navigate("/");
   };
 
@@ -42,7 +38,6 @@ const Header = ({ setShowSideDrawer }) => {
     e.preventDefault();
     let searchResults = [];
     setShowSideDrawer(true);
-
     await userRequest({
       attempt: "search",
       method: "GET",
@@ -55,19 +50,12 @@ const Header = ({ setShowSideDrawer }) => {
       }
     });
 
-    await chatRequest({
-      attempt: "search",
-      method: "GET",
-      headers: { authorization: `JWT ${accessToken}` },
-      params: `?chatName=${search}`,
-    }).then(async (res) => {
-      if (res.ok) {
+    await searchRooms({ accessToken, search })
+      .then(async (res) => {
         const searchResult = await res.json();
         searchResults = [...searchResults, ...searchResult];
-      }
-    });
-    console.log(searchResults, "iouuuuuuu");
-
+      })
+      .catch((err) => alert(err));
     dispatch(setSearchedChatsAndUsers(searchResults));
   };
 

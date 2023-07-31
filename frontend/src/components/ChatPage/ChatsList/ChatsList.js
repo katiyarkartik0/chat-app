@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Chat from "components/ChatPage/ChatsList/Chat/Chat";
 import { setAllChats } from "store/slices/chatSlice";
-import { chatRequest } from "api/chat";
+import { fetchChats } from "api/chat";
 
 import { Modal } from "utils/ModalComponent/Modal";
 import { getAccessToken, getAllChats, getUserData } from "helpers/selectors";
@@ -21,18 +21,15 @@ const ChatsList = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   useEffect(() => {
-    const fetchChats = async () => {
-      const res = await chatRequest({
-        attempt: "fetchChats",
-        headers: { authorization: `JWT ${accessToken}` },
-        method: "GET",
-      });
-      if (res.ok) {
-        const response = await res.json();
-        dispatch(setAllChats(response));
-      }
+    const getChats = async () => {
+      await fetchChats(accessToken)
+        .then(async (res) => {
+          const response = await res.json();
+          dispatch(setAllChats(response));
+        })
+        .catch((err) => alert(err));
     };
-    fetchChats();
+    getChats();
   }, [accessToken, userData, dispatch]);
 
   useEffect(() => {
@@ -61,12 +58,12 @@ const ChatsList = () => {
 
       <div className="room-list-header">
         <div className="chat-list-topic">ROOMS</div>
-        <Button type="click" onClickEvent={toggleModal} text="Create a room"/>
+        <Button type="click" onClickEvent={toggleModal} text="Create a room" />
       </div>
       <br></br>
       <div className="chats-list-section">{rooms}</div>
       <br></br>
-        <div className="chat-list-topic">Chats List</div>
+      <div className="chat-list-topic">Chats List</div>
       <div className="chats-list-section">{oneOnOnechats}</div>
     </div>
   );

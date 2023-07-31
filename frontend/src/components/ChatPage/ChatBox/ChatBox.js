@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { socket } from "components/../socket";
 import { messageRequest } from "api/message";
@@ -8,6 +8,8 @@ import Message from "components/ChatPage/Message/Message";
 import SelectChatOrRoomSvg from "utils/SelectChatOrRoomSvg";
 import {
   getAccessToken,
+  getAllChats,
+  getNotificationState,
   getSelectedChat,
   getUserData,
 } from "helpers/selectors";
@@ -15,6 +17,7 @@ import {
 import "./ChatBox.css";
 import ChatHeader from "./ChatHeader/ChatHeader";
 import ChatBar from "./ChatBar/ChatBar";
+import { setNotification, setNotificationState } from "store/slices/chatSlice";
 
 const ChatBox = () => {
   const [messages, setMessages] = useState([]);
@@ -24,6 +27,10 @@ const ChatBox = () => {
   const userData = useSelector(getUserData);
   const [rendering, setRendering] = useState(0);
   const messageScrollRef = useRef(null);
+  const dispatch = useDispatch();
+  const notificationState = useSelector(getNotificationState);
+
+  console.log(notificationState)
 
   useEffect(() => {
     const fetchAllMessages = async () => {
@@ -59,9 +66,17 @@ const ChatBox = () => {
   useEffect(() => {
     const onMessageRecieved = (newMessageRecieved) => {
       console.log(newMessageRecieved);
+      console.log(newMessageRecieved);
 
       if (!selectedChat || selectedChat._id !== newMessageRecieved.chat._id) {
         //notify
+        // const currentNotificationCount =
+        //   notificationState[newMessageRecieved.chat._id] || 0;
+        // dispatch(
+        //   setNotificationState({
+        //     [newMessageRecieved.chat._id]: currentNotificationCount + 1,
+        //   })
+        // );
       } else {
         setMessages([...messages, newMessageRecieved]);
       }
@@ -75,7 +90,6 @@ const ChatBox = () => {
     console.log(rendering);
   }, []);
 
- 
   useEffect(() => {
     messageScrollRef.current?.scrollIntoView();
   });
@@ -93,8 +107,7 @@ const ChatBox = () => {
             ))}
             <div ref={messageScrollRef}></div>
           </div>
-          <ChatBar messages={messages} setMessages={setMessages}/>
-         
+          <ChatBar messages={messages} setMessages={setMessages} />
         </>
       ) : (
         <SelectChatOrRoomSvg />

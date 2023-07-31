@@ -62,7 +62,7 @@ export const Modal = ({ toggleModal }) => {
   };
 
   const getModalStatusClassName = () => {
-    const { created, showRoomStatus, msg } = roomStatus;
+    const { created, showRoomStatus } = roomStatus;
     let className = "";
     if (created) {
       className += "success-message";

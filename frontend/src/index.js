@@ -8,7 +8,7 @@ import { persistStore } from "redux-persist";
 import Footer from "Footer/Footer";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-const persistor = persistStore(store);
+export const persistor = persistStore(store);
 root.render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>

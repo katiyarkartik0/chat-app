@@ -8,7 +8,7 @@ chatRoutes.use(bodyParser.json());
 
 chatRoutes.post("/accessChats",accessChats)
 chatRoutes.get("/fetchChats",fetchChats)
-chatRoutes.get("/search",searchRooms);
+chatRoutes.get("/searchRooms",searchRooms);
 chatRoutes.post("/createRoom",createRoom);
 chatRoutes.post("/accessRoom",accessRoom);
 

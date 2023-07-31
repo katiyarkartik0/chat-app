@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { PURGE } from "redux-persist";
 
 const initialState = {
   searchedChatsAndUsers:[]
@@ -14,6 +15,11 @@ const searchSlice = createSlice({
     setSearchToDefault:(state,action)=>{
       state.searchedChatsAndUsers = null;
     }
+  },
+  extraReducers(builder) {
+    builder.addCase(PURGE, () => {
+      return initialState;
+    });
   },
 });
 

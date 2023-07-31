@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { PURGE } from "redux-persist";
 
 const initialState = {
   selectedChat: null,
   allChats: [],
+  notificationState: {},
 };
 
 const chatsSlice = createSlice({
-  name: "chat",
+  name: "chats",
   initialState,
   reducers: {
     setSelectedChat: (state, action) => {
@@ -18,13 +20,29 @@ const chatsSlice = createSlice({
     addToAllChats: (state, action) => {
       state.allChats.push(action.payload);
     },
-    setChatsToDefault:(state,action)=>{
+    setChatsToDefault: (state, action) => {
       state.selectedChat = null;
-      state.allChats=[]
-    }
+      state.allChats = [];
+    },
+    setNotificationState: (state, action) => {
+      const { notificationState } = state;
+      const notificationObj = action.payload;
+      state.notificationState = { ...notificationState, ...notificationObj };
+      console.log(state.notificationState)
+    },
+  },
+  extraReducers(builder) {
+    builder.addCase(PURGE, () => {
+      return initialState;
+    });
   },
 });
 
-export const { setSelectedChat, setAllChats, addToAllChats,setChatsToDefault } =
-  chatsSlice.actions;
+export const {
+  setSelectedChat,
+  setAllChats,
+  addToAllChats,
+  setChatsToDefault,
+  setNotificationState
+} = chatsSlice.actions;
 export default chatsSlice.reducer;

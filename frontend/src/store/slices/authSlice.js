@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { PURGE } from "redux-persist";
 
 const initialState = {
   userData: null,
@@ -17,6 +18,11 @@ const authSlice = createSlice({
       state.userData = null;
       state.accessToken = null;
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(PURGE, () => {
+      return initialState;
+    });
   },
 });
 

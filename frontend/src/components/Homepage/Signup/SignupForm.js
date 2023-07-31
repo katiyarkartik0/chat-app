@@ -1,23 +1,27 @@
 import React, { useState } from "react";
-import { authRequest } from "api/auth";
+import { authRequest, userSignup } from "api/auth";
 
 import "./SignupForm.css";
 import Button from "components/Button/Button";
 
+const defaultUserData = {
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
+
+const defaultError = {
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
+
 const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [userData, setUserData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [errors, setErrors] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const [userData, setUserData] = useState(defaultUserData);
+  const [errors, setErrors] = useState(defaultError);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -37,25 +41,19 @@ const SignupForm = () => {
       });
       return;
     }
-    const res = await authRequest({
-      method: "POST",
-      body: JSON.stringify({ name, email, password }),
-      headers: { "Content-Type": "application/json" },
-      attempt: "signup",
-    });
 
-    const { isEmailValid, msg } = await res.json();
-    if (!isEmailValid) {
-      setErrors({ email: msg });
-      return;
-    }
-    alert("congratulations");
-    setUserData({
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
+    await userSignup({ name, email, password })
+      .then(async (res) => {
+        const { isEmailValid, msg } = await res.json();
+        if (!isEmailValid) {
+          setErrors({ email: msg });
+          return;
+        }
+        alert("congratulations! your account has been created. Try signing in");
+        setUserData(defaultUserData);
+        setErrors(defaultError);
+      })
+      .catch((err) => alert(err));
   };
   return (
     <form className="form" onSubmit={handleSubmit} onChange={handleUserData}>
@@ -111,7 +109,7 @@ const SignupForm = () => {
 
       {/* <label htmlFor="profilePicture" className="uploadButtonLabel">Upload a Profile Picture</label>
       <input type="file" className="input-field-file" id="profilePicture" accept="image/*" placeholder="" required /> */}
-      <Button type="submit" text="Sign Up"/>
+      <Button type="submit" text="Sign Up" />
     </form>
   );
 };
