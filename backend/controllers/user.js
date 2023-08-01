@@ -1,6 +1,6 @@
 const User = require("../models/user");
 
-const searchUser = async (req, res) => {
+const searchUsers = async (req, res) => {
   if (req.verified == false) {
     return res.status(403).send(req.msg);
   }
@@ -19,4 +19,4 @@ const searchUser = async (req, res) => {
   res.status(200).send(users);
 };
 
-module.exports = {searchUser}
+module.exports = {searchUsers}

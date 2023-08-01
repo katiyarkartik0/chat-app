@@ -14,7 +14,6 @@
   flex-direction: column;
   align-items: center;
 }
-
 .clickable-tab-selectedChat {
   border-radius: 5px;
   display: inline-block;

@@ -14,15 +14,20 @@ import "./ChatPage.css";
 const ChatPage = () => {
   const [showSideDrawer, setShowSideDrawer] = useState(false);
   const accessToken = useSelector(getAccessToken);
+  const [search,setSearch] = useState("");
 
   const toggleSideDrawer = () =>{
     setShowSideDrawer((prev)=>!prev)
   }
 
+  const updateSearch=(search) =>{
+    setSearch(search)
+  }
+
   if(accessToken){
     return (
       <div className="chat-page">
-        <Header setShowSideDrawer={setShowSideDrawer} />
+        <Header setShowSideDrawer={setShowSideDrawer} updateSearch={updateSearch}/>
         <div className="chat-container ">
           <div className="friends-list">
             <ChatsList />
@@ -35,6 +40,7 @@ const ChatPage = () => {
           <SideDrawer
             showSideDrawer={showSideDrawer}
             toggleSideDrawer={toggleSideDrawer}
+            search={search}
           />
         }
       </div>

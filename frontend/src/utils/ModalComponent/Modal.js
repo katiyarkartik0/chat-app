@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import "./Modal.css";
-import { chatRequest } from "api/chat";
+import { chatRequest, createRoom } from "api/chat";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAccessToken } from "helpers/selectors";
@@ -24,37 +24,31 @@ export const Modal = ({ toggleModal }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await chatRequest({
-      method: "POST",
-      attempt: "createRoom",
-      headers: {
-        authorization: `JWT ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ roomName }),
-    }).then(async (res) => {
-      const response = await res.json();
-      if (res.ok) {
-        dispatch(addToAllChats(response));
-        setRoomStatus({
-          showRoomStatus: true,
-          created: true,
-          msg: "Room has been successfully created",
-        });
-        setRoomName("");
-        return;
-      } else {
-        setRoomStatus({
-          showRoomStatus: true,
-          created: false,
-          msg: response.msg,
-        });
 
+    await createRoom({ accessToken, roomName })
+      .then(async (res) => {
+        const response = await res.json();
+        if (res.ok) {
+          dispatch(addToAllChats(response));
+          setRoomStatus({
+            showRoomStatus: true,
+            created: true,
+            msg: "Room has been successfully created",
+          });
+          setRoomName("");
+          return;
+        } else {
+          setRoomStatus({
+            showRoomStatus: true,
+            created: false,
+            msg: response.msg,
+          });
+        }
         setTimeout(() => {
           setRoomStatus(defaultRoomStatus);
         }, 3000);
-      }
-    });
+      })
+      .catch((err) => alert(err));
   };
 
   const handleRoomName = (e) => {

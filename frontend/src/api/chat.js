@@ -1,18 +1,5 @@
 import { ENDPOINT } from "../constants";
 
-export const chatRequest = async ({
-  attempt,
-  method,
-  headers,
-  body,
-  params = "",
-}) =>
-  await fetch(`${ENDPOINT}/api/chat/${attempt}${params}`, {
-    method,
-    headers,
-    body,
-  });
-
 export const fetchChats = async (accessToken) =>
   await fetch(`${ENDPOINT}/api/chat/fetchChats`, {
     method: "GET",
@@ -45,3 +32,12 @@ export const searchRooms = async ({ accessToken, search }) =>
     headers: { authorization: `JWT ${accessToken}` },
   });
 
+export const createRoom = async ({ accessToken, roomName }) =>
+  await fetch(`${ENDPOINT}/api/chat/createRoom`, {
+    method: "POST",
+    headers: {
+      authorization: `JWT ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ roomName }),
+  });

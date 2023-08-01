@@ -5,7 +5,7 @@ import LoginForm from "components/Homepage/Login/LoginForm";
 
 import "./Homepage.css";
 import Button from "components/Button/Button";
-import logo from "utils/logo.png";
+import logo from "utils/Heraldlogo/herald_logo.svg";
 
 const activeButtonStyles = { "background-color": "teal" };
 const inActiveButtonStyles = { "background-color": "#fff", color: "black" };

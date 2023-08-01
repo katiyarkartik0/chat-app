@@ -12,7 +12,6 @@ import {
 } from "redux-persist";
 import { combineReducers } from "@reduxjs/toolkit";
 import chatsSlice from "./slices/chatSlice";
-import searchSlice from "./slices/searchSlice";
 
 const persistConfig = {
   key: "root",
@@ -23,7 +22,6 @@ const persistConfig = {
 const reducer = combineReducers({
   auth: authSlice,
   chats: chatsSlice,
-  search: searchSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);
