@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { socket } from "components/../socket";
-import { messageRequest } from "api/message";
+import { fetchAllMessages, messageRequest } from "api/message";
 import Message from "components/ChatPage/Message/Message";
 
 import SelectChatOrRoomSvg from "utils/SelectChatOrRoomSvg";
@@ -30,23 +30,22 @@ const ChatBox = () => {
   const dispatch = useDispatch();
   const notificationState = useSelector(getNotificationState);
 
-  console.log(notificationState)
+  console.log(notificationState);
 
   useEffect(() => {
-    const fetchAllMessages = async () => {
-      const res = await messageRequest({
-        attempt: "fetchAllMessages",
-        headers: { authorization: `JWT ${accessToken}` },
-        method: "GET",
-        params: selectedChat?._id,
-      });
-      if (res.ok) {
-        const response = await res.json();
-        setMessages(response);
-      }
+    const polulateMessages = async () => {
+      await fetchAllMessages({
+        id: selectedChat?._id,
+        accessToken,
+      })
+        .then(async (res) => {
+          const response = await res.json();
+          setMessages(response);
+        })
+        .catch((err) => alert(err));
     };
     if (selectedChat) {
-      fetchAllMessages();
+      polulateMessages();
       socket.emit("join chat", selectedChat._id);
     }
   }, [selectedChat]);

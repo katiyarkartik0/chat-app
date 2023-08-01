@@ -4,10 +4,10 @@ import Button from "components/Button/Button";
 import { getAccessToken, getSelectedChat } from "helpers/selectors";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { messageRequest } from "api/message";
+import { sendMessage } from "api/message";
 import { socket } from "components/../socket";
 
-const ChatBar = ({messages, setMessages }) => {
+const ChatBar = ({ messages, setMessages }) => {
   const selectedChat = useSelector(getSelectedChat);
   const accessToken = useSelector(getAccessToken);
   const [newMessage, setNewMessage] = useState("");
@@ -20,27 +20,21 @@ const ChatBar = ({messages, setMessages }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsMessageSending(true);
-    const body = JSON.stringify({
-      content: newMessage,
-      chatId: selectedChat._id,
-    });
-
-    const res = await messageRequest({
-      attempt: "sendMessage",
-      headers: {
-        authorization: `JWT ${accessToken}`,
-        "Content-Type": "application/json",
+    await sendMessage({
+      messageBody: {
+        content: newMessage,
+        chatId: selectedChat?._id,
       },
-      method: "POST",
-      body,
-    });
+      accessToken,
+    })
+      .then(async (res) => {
+        const response = await res.json();
+        setMessages([...messages, response]);
+        setNewMessage("");
+        socket.emit("new message", response);
+      })
+      .catch((err) => alert(err));
 
-    if (res.ok) {
-      const response = await res.json();
-      setMessages([...messages, response]);
-      setNewMessage("");
-      socket.emit("new message", response);
-    }
     setIsMessageSending(false);
   };
   return (
