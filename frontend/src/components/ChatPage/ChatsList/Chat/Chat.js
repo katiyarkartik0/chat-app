@@ -1,14 +1,14 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import "./Chat.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getSelectedChat, getUserData } from "helpers/selectors";
+import { getNotificationState, getSelectedChat, getUserData } from "helpers/selectors";
 import { setSelectedChat } from "store/slices/chatSlice";
-import { RoomDropdown } from "components/Dropdown/RoomDropdown";
 
-const Chat = ({ chat = {} }) => {
+const Chat = ({ chat = {}, notification }) => {
   const userData = useSelector(getUserData);
   const dispatch = useDispatch();
   const selectedChat = useSelector(getSelectedChat);
+  const notificationState = useSelector(getNotificationState);
 
   const handleClick = () => {
     dispatch(setSelectedChat(chat));
@@ -29,15 +29,16 @@ const Chat = ({ chat = {} }) => {
   }, [chat]);
 
   return (
-      <button
-        className={`clickable-tab${
-          selectedChat && selectedChat._id == chat._id ? "-selectedChat" : ""
-        }`}
-        onClick={handleClick}
-      >
-          <div className="primary-text">{primaryText}</div>
-          <div className="secondary-text">{secondaryText}</div>
-        </button>
+    <button
+      className={`clickable-tab${
+        selectedChat && selectedChat._id == chat._id ? "-selectedChat" : ""
+      }`}
+      onClick={handleClick}
+    >
+      <div className="primary-text">{primaryText}</div>
+      <div className="secondary-text">{secondaryText}</div>
+      {notificationState[chat._id]>0 &&  <div className="notification">{notificationState[chat._id]}</div>}
+    </button>
   );
 };
 

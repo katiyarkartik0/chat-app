@@ -1,36 +1,46 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { useSelector } from "react-redux";
 
 import Header from "components/ChatPage/Header/Header";
-import ChatsList from "components/ChatPage/ChatsList/ChatsList";
 import ChatBox from "components/ChatPage/ChatBox/ChatBox";
 import SideDrawer from "components/ChatPage/SideDrawer/SideDrawer";
 import UnauthorizedPage from "pages/unauthorizedPage/UnauthorizedPage";
 
 import { getAccessToken } from "helpers/selectors";
 
+import { Loader } from "utils/Loader/Loader";
+
 import "./ChatPage.css";
+
+const ChatsList = React.lazy(() =>
+  import("components/ChatPage/ChatsList/ChatsList")
+);
 
 const ChatPage = () => {
   const [showSideDrawer, setShowSideDrawer] = useState(false);
   const accessToken = useSelector(getAccessToken);
-  const [search,setSearch] = useState("");
+  const [search, setSearch] = useState("");
 
-  const toggleSideDrawer = () =>{
-    setShowSideDrawer((prev)=>!prev)
-  }
+  const toggleSideDrawer = () => {
+    setShowSideDrawer((prev) => !prev);
+  };
 
-  const updateSearch=(search) =>{
-    setSearch(search)
-  }
+  const updateSearch = (search) => {
+    setSearch(search);
+  };
 
-  if(accessToken){
+  if (accessToken) {
     return (
       <div className="chat-page">
-        <Header setShowSideDrawer={setShowSideDrawer} updateSearch={updateSearch}/>
+        <Header
+          setShowSideDrawer={setShowSideDrawer}
+          updateSearch={updateSearch}
+        />
         <div className="chat-container ">
           <div className="friends-list">
-            <ChatsList />
+            <Suspense fallback={<Loader />}>
+              <ChatsList />
+            </Suspense>
           </div>
           <div className="chat-box">
             <ChatBox />
@@ -46,9 +56,7 @@ const ChatPage = () => {
       </div>
     );
   }
-  return <UnauthorizedPage/>
-
- 
+  return <UnauthorizedPage />;
 };
 
 export default ChatPage;

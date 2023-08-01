@@ -6,7 +6,11 @@ import { setAllChats } from "store/slices/chatSlice";
 import { fetchChats } from "api/chat";
 
 import { Modal } from "utils/ModalComponent/Modal";
-import { getAccessToken, getAllChats, getUserData } from "helpers/selectors";
+import {
+  getAccessToken,
+  getAllChats,
+  getUserData,
+} from "helpers/selectors";
 
 import "./ChatList.css";
 import Button from "components/Button/Button";

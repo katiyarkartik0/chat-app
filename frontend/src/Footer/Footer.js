@@ -8,16 +8,13 @@ import {
 } from "react-icons/fa";
 import "./Footer.css";
 import mernLogo from "utils/MERNlogo/MERN-logo_adobe_express.svg";
-// import mernSvg from "utils/MERN-logo.png"
-// import { MernSvg } from "utils/MernSvg";
 const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
         <div className="made-with">
-          Made with <img  src={mernLogo} className='mern_logo' alt="fireSpot"/> by Kartik Katiyar
+          Made with <img  src={mernLogo} loading="lazy" className='mern_logo' alt="MERN"/> by Kartik Katiyar
         </div>
-        {/* <MernSvg/> */}
         <br></br>
         <div className="social-icons">
           <a

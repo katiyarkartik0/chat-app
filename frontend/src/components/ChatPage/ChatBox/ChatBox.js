@@ -2,13 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { socket } from "components/../socket";
-import { fetchAllMessages, messageRequest } from "api/message";
+import { fetchAllMessages } from "api/message";
 import Message from "components/ChatPage/Message/Message";
 
 import SelectChatOrRoomSvg from "utils/SelectChatOrRoomSvg";
 import {
   getAccessToken,
-  getAllChats,
   getNotificationState,
   getSelectedChat,
   getUserData,
@@ -41,6 +40,11 @@ const ChatBox = () => {
         .then(async (res) => {
           const response = await res.json();
           setMessages(response);
+          dispatch(
+            setNotificationState({
+              [selectedChat._id]: 0,
+            })
+          );
         })
         .catch((err) => alert(err));
     };
@@ -48,7 +52,7 @@ const ChatBox = () => {
       polulateMessages();
       socket.emit("join chat", selectedChat._id);
     }
-  }, [selectedChat]);
+  }, [selectedChat,accessToken]);
 
   useEffect(() => {
     const onConnect = () => setSocketConnected(true);
@@ -69,13 +73,13 @@ const ChatBox = () => {
 
       if (!selectedChat || selectedChat._id !== newMessageRecieved.chat._id) {
         //notify
-        // const currentNotificationCount =
-        //   notificationState[newMessageRecieved.chat._id] || 0;
-        // dispatch(
-        //   setNotificationState({
-        //     [newMessageRecieved.chat._id]: currentNotificationCount + 1,
-        //   })
-        // );
+        const currentNotificationCount =
+          notificationState[newMessageRecieved.chat._id] || 0;
+        dispatch(
+          setNotificationState({
+            [newMessageRecieved.chat._id]: currentNotificationCount + 1,
+          })
+        );
       } else {
         setMessages([...messages, newMessageRecieved]);
       }
@@ -86,7 +90,6 @@ const ChatBox = () => {
 
   useEffect(() => {
     setRendering((prev) => prev + 1);
-    console.log(rendering);
   }, []);
 
   useEffect(() => {
