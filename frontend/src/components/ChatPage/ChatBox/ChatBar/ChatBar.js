@@ -23,7 +23,6 @@ const ChatBar = ({ messages, setMessages }) => {
   const handleFileUpload = (e) => {
     setNewMessage((prev) => ({ ...prev, file: e.target.files[0] }));
   };
-  console.log(newMessage)
 
   const handleSubmit = async (e) => {
     e.preventDefault();

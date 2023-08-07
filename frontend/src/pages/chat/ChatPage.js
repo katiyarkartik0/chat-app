@@ -28,7 +28,6 @@ const ChatPage = () => {
   const updateSearch = (search) => {
     setSearch(search);
   };
-console.log(process.env,"jjjjj")
   if (accessToken) {
     return (
       <div className="chat-page">

@@ -28,7 +28,6 @@ const chatsSlice = createSlice({
       const { notificationState } = state;
       const notificationObj = action.payload;
       state.notificationState = { ...notificationState, ...notificationObj };
-      console.log(state.notificationState)
     },
   },
   extraReducers(builder) {

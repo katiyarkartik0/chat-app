@@ -24,12 +24,11 @@ const ChatBox = () => {
   const selectedChat = useSelector(getSelectedChat);
   const accessToken = useSelector(getAccessToken);
   const userData = useSelector(getUserData);
-  const [rendering, setRendering] = useState(0);
   const messageScrollRef = useRef(null);
   const dispatch = useDispatch();
   const notificationState = useSelector(getNotificationState);
 
-  console.log(notificationState);
+
 
   useEffect(() => {
     const polulateMessages = async () => {
@@ -52,6 +51,7 @@ const ChatBox = () => {
       polulateMessages();
       socket.emit("join chat", selectedChat._id);
     }
+
   }, [selectedChat,accessToken]);
 
   useEffect(() => {
@@ -63,18 +63,13 @@ const ChatBox = () => {
     return () => {
       console.log("DISCONNECTING CONNECTION EVENT");
       socket.off("connected", onConnect);
+
     };
   }, [userData]);
 
-  console.log(process.env.REACT_APP_FILE_PATH,"llll")
-
   useEffect(() => {
-    const onMessageRecieved = (newMessageRecieved) => {
-      console.log(newMessageRecieved);
-      console.log(newMessageRecieved);
-
-      if (!selectedChat || selectedChat._id !== newMessageRecieved.chat._id) {
-        //notify
+    const onMessageRecieved = (newMessageRecieved) => {  
+      if (!selectedChat || selectedChat._id !== newMessageRecieved.chat._id) {  
         const currentNotificationCount =
           notificationState[newMessageRecieved.chat._id] || 0;
         dispatch(
@@ -82,17 +77,14 @@ const ChatBox = () => {
             [newMessageRecieved.chat._id]: currentNotificationCount + 1,
           })
         );
-      } else {
+      } else if(selectedChat._id === newMessageRecieved.chat._id){
         setMessages([...messages, newMessageRecieved]);
       }
     };
-
     socket.on("message recieved", onMessageRecieved);
-  });
 
-  useEffect(() => {
-    setRendering((prev) => prev + 1);
-  }, []);
+    return ()=>socket.off("message recieved", onMessageRecieved)
+  });
 
   useEffect(() => {
     messageScrollRef.current?.scrollIntoView();
