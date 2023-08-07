@@ -50,7 +50,6 @@ const Header = ({ setShowSideDrawer, updateSearch }) => {
           text={userData.name}
           onClickEvent={handleToggleDropdown}
         />
-
         {showDropdown && (
           <div className="dropdown-content">
             <button className="settings-btn">Settings</button>

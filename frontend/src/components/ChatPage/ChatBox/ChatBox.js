@@ -66,6 +66,8 @@ const ChatBox = () => {
     };
   }, [userData]);
 
+  console.log(process.env.REACT_APP_FILE_PATH,"llll")
+
   useEffect(() => {
     const onMessageRecieved = (newMessageRecieved) => {
       console.log(newMessageRecieved);

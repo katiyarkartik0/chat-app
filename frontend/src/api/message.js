@@ -13,5 +13,5 @@ export const sendMessage = async ({ messageBody,accessToken }) =>
       authorization: `JWT ${accessToken}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(messageBody),
+    body: messageBody,
   });

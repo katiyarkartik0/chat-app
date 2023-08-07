@@ -6,7 +6,9 @@ import store from "./store";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import Footer from "Footer/Footer";
+// import dotenv from "dotenv";
 
+// require("dotenv").config();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 export const persistor = persistStore(store);
 root.render(

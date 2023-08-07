@@ -18,6 +18,7 @@ app.use(routes);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
 app.get("/", (req, res) => {
   res.status(200).send("Wlcome");
 });
@@ -38,7 +39,6 @@ mongoose
       console.log("listening to post 5000")
     );
     const io = new Server(server, {
-      // pingTimeout: 3600000,
       cors: {
         origin: "http://localhost:3000",
       },

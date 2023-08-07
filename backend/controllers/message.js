@@ -1,12 +1,70 @@
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const Chat = require("../models/chat");
 const Message = require("../models/message");
+const dotenv = require("dotenv");
+dotenv.config();
+
+const {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} = require("@aws-sdk/client-s3");
+
+const s3client = new S3Client({
+  region: process.env.AWS_S3_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_PROGRAMATIC_USER_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_PROGRAMATIC_USER_SECRET_ACCESS_KEY,
+  },
+});
+
+const putObjectUrl = async ({ fileName, contentType }) => {
+  const command = new PutObjectCommand({
+    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Key: `${process.env.AWS_S3_BUCKET_KEY}/${fileName}`,
+    ContentType: contentType,
+  });
+  const url = getSignedUrl(s3client, command);
+  return url;
+};
+
+const getObjectUrl = async ({ fileName }) => {
+  const command = new GetObjectCommand({
+    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Key: `${process.env.AWS_S3_BUCKET_KEY}/${fileName}`,
+  });
+  const url = getSignedUrl(s3client, command);
+  return url;
+};
+
+const fetchPreSignedGetUrl = async (req, res) => {
+  if (req.verified == false) {
+    return res.status(403).send(req.msg);
+  }
+  const { fileName } = req.params;
+  console.log(fileName)
+  try {
+    const preSignedGETUrl = await getObjectUrl({ fileName });
+    console.log(preSignedGETUrl)
+    res.status(200).json(preSignedGETUrl);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
 
 const sendMessage = async (req, res) => {
   if (req.verified == false) {
     return res.status(403).send(req.msg);
   }
+  console.log(req.body);
+  const { content, chatId, contentType, fileName } = req.body;
+
+  let preSignedPUTUrl;
+  if (fileName && contentType) {
+    preSignedPUTUrl = await putObjectUrl({ fileName, contentType });
+  }
+
   const userId = req.id;
-  const { content, chatId } = req.body;
 
   if (!content || !chatId) {
     return res.status(400).send("Invalid data passed into request");
@@ -17,10 +75,14 @@ const sendMessage = async (req, res) => {
       sender: userId,
       content: content,
       chat: chatId,
+      uploadedFile: {
+        fileName,
+        contentType,
+      },
     });
 
     await message.save();
-    Message.find({
+    await Message.find({
       sender: userId,
       content: content,
       chat: chatId,
@@ -35,7 +97,10 @@ const sendMessage = async (req, res) => {
           select: "name email",
         });
         await Chat.findByIdAndUpdate(chatId, { latestMessage: message });
-        res.status(200).json(results[0]);
+        res.status(200).json({
+          message: results[0],
+          preSignedPUTUrl,
+        });
       });
   } catch (error) {
     res.status(400).send(error);
@@ -48,14 +113,14 @@ const fetchAllMessages = async (req, res) => {
   }
   const { chatId } = req.params;
   try {
-    const message = await Message.find({ chat: chatId })
+    const messages = await Message.find({ chat: chatId })
       .populate("sender", "name email")
       .populate("chat");
 
-      res.status(200).json(message);
+    res.status(200).json(messages);
   } catch (error) {
     res.status(400).send(error);
   }
 };
 
-module.exports = { sendMessage,fetchAllMessages };
+module.exports = { sendMessage, fetchAllMessages, fetchPreSignedGetUrl };
