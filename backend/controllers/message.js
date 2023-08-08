@@ -56,7 +56,6 @@ const sendMessage = async (req, res) => {
   if (req.verified == false) {
     return res.status(403).send(req.msg);
   }
-  console.log(req.body);
   const { content, chatId, contentType, fileName } = req.body;
 
   let preSignedPUTUrl;
