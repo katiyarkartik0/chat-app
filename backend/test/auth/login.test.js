@@ -3,9 +3,9 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 const expect = chai.expect;
-const server = require("../server");
+const server = require("../../server");
 const sinon = require("sinon");
-const { Validator } = require("../helpers/validator");
+const { Validator } = require("../../helpers/validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
