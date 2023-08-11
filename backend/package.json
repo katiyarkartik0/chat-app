@@ -12,12 +12,19 @@
     "socket.io": "^4.7.1"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "mocha 'test/**/*.js' --exit --timeout 7000"
   },
   "name": "chat-app",
   "version": "1.0.0",
   "description": "a real time chat application",
   "main": "server.js",
   "author": "Kartik Katiyar",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "chai-http": "^4.4.0",
+    "mocha": "^10.2.0",
+    "sinon": "^15.2.0"
+  }
 }

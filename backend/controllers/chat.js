@@ -41,11 +41,11 @@ const accessChats = async (req, res) => {
 
     try {
       const createdChat = await Chat.create(chatData);
-      const FullChat = await Chat.findOne({ _id: createdChat._id }).populate(
+      const fullChat = await Chat.findOne({ _id: createdChat._id }).populate(
         "users",
         "-password"
       );
-      res.status(200).json(FullChat);
+      res.status(200).json(fullChat);
     } catch (error) {
       res.status(400);
       throw new Error(error.message);
@@ -157,6 +157,7 @@ const accessRoom = async (req, res) => {
 
   return res.status(200).send(isChat[0]);
 };
+
 const searchRooms = async (req, res) => {
   if (req.verified == false) {
     return res.status(403).send(req.msg);
