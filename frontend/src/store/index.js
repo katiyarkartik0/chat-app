@@ -12,6 +12,7 @@ import {
 } from "redux-persist";
 import { combineReducers } from "@reduxjs/toolkit";
 import chatsSlice from "./slices/chatSlice";
+import toastSlice from "./slices/toastSlice";
 
 const persistConfig = {
   key: "root",
@@ -22,6 +23,7 @@ const persistConfig = {
 const reducer = combineReducers({
   auth: authSlice,
   chats: chatsSlice,
+  toast: toastSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

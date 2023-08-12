@@ -5,3 +5,5 @@ export const getSelectedChat = (state) => state.chats.selectedChat;
 export const getNotificationState = (state) => state.chats.notificationState
 export const getSearchedChatsAndUsers = (state) =>
   state.search.searchedChatsAndUsers;
+
+export const getToastContent = (state)=> state.toast

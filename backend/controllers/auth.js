@@ -15,11 +15,10 @@ const registerUser = async (req, res) => {
   ]);
   if (!isInputValid) {
     return res.status(400).json({
-      inputValidationMessage,
+      msg:inputValidationMessage,
       isInputValid,
     });
   }
-
   const { userData, msg, isEmailValid } = await getUser(email, {
     attempt: "signup",
   });
@@ -40,7 +39,7 @@ const registerUser = async (req, res) => {
     await newUser.save();
     return res.status(200).json({
       isEmailValid: true,
-      msg,
+      msg:"Account created Successfully!",
     });
   } catch (error) {
     return res.status(400).json(error);

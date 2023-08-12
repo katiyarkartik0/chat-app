@@ -8,6 +8,7 @@ import { setLogin } from "store/slices/authSlice";
 import "./LoginForm.css";
 import Button from "components/Button/Button";
 import { Loader } from "utils/Loader/Loader";
+import { setToast } from "store/slices/toastSlice";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -47,10 +48,11 @@ const LoginForm = () => {
           return;
         }
         dispatch(setLogin({ accessToken, userData }));
+        dispatch(setToast({status:"success",displayMessage:msg}))
         navigate("/chat");
       })
       .catch((error) => {
-        alert(error);
+        dispatch(setToast({status:"failure",displayMessage:error}))
       });
       setIsLoading(false);
 
