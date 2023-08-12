@@ -12,7 +12,7 @@ const bcrypt = require("bcrypt");
 describe("verification of login calls to the server", () => {
   it("Successful Login", (done) => {
     const signInBody = {
-      username: "katiyarkartik0@gmail.com",
+      email: "katiyarkartik0@gmail.com",
       password: "qwerty",
     };
 
@@ -58,7 +58,7 @@ describe("verification of login calls to the server", () => {
   });
   it("Unsuccessful Login due to invalid username", (done) => {
     const signInBody = {
-      username: "katiyarswastik0@newsagg",
+      email: "katiyarswastik0@newsagg",
       password: "randomPasswordInput",
     };
 
@@ -83,7 +83,7 @@ describe("verification of login calls to the server", () => {
 
   it("Unsuccessful Login due to valid but unknown username", (done) => {
     const signInBody = {
-      username: "katiyarkartik1@gmail.com",
+      email: "katiyarkartik1@gmail.com",
       password: "qwerty",
     };
 
@@ -112,7 +112,7 @@ describe("verification of login calls to the server", () => {
 
   it("Unsuccessful Login due to invalid password", (done) => {
     const signInBody = {
-      username: "katiyarkartik0@gmail.com",
+      email: "katiyarkartik0@gmail.com",
       password: "wrongpasswordinput",
     };
 

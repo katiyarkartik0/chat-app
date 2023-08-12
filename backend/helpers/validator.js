@@ -2,10 +2,22 @@ const User = require("../models/user");
 
 class Validator {
   constructor() {}
+  inputValidation(arrayOfInputs) {
+    for(let i = 0; i<arrayOfInputs.length;i++){
+      const input = arrayOfInputs[i];
+      if (!input) {
+        return {
+          isInputValid: true,
+          msg: `${input} field cannot be empty`,
+        };
+      }
+    }
+    return {
+      isInputValid: false,
+    };
+  }
   async getUser(email, { attempt }) {
-    if (
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) == false
-    ) {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) == false) {
       return {
         usersData: null,
         isEmailValid: false,

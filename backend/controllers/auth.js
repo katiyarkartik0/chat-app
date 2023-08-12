@@ -7,7 +7,20 @@ const { Validator } = require("../helpers/validator");
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
   const validator = new Validator();
-  const { userData, msg, isEmailValid } = await validator.getUser(email, {
+  const { getUser, inputValidation } = validator;
+  const { isInputValid, msg: inputValidationMessage } = inputValidation([
+    name,
+    email,
+    password,
+  ]);
+  if (!isInputValid) {
+    return res.status(400).json({
+      inputValidationMessage,
+      isInputValid,
+    });
+  }
+
+  const { userData, msg, isEmailValid } = await getUser(email, {
     attempt: "signup",
   });
   if (!isEmailValid || userData) {
@@ -22,16 +35,15 @@ const registerUser = async (req, res) => {
     email,
     password: bcrypt.hashSync(password.toString(), 4),
   });
-  if (process.env.NODE_ENV != "test") {
-    try {
-      await newUser.save();
-      return res.status(200).send({
-        isEmailValid: true,
-        msg,
-      });
-    } catch (error) {
-      return res.status(400).send(error);
-    }
+
+  try {
+    await newUser.save();
+    return res.status(200).json({
+      isEmailValid: true,
+      msg,
+    });
+  } catch (error) {
+    return res.status(400).json(error);
   }
 };
 
