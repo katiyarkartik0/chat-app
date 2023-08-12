@@ -3,16 +3,18 @@
   top: 0;
   left: 0;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
   z-index: 9999;
   transition: opacity 0.3s;
   opacity: 0;
+  display: none;
 }
 
 .toast-container.show {
   opacity: 1;
+  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .toast {
