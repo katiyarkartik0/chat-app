@@ -3,6 +3,8 @@ import { authRequest, userSignup } from "api/auth";
 
 import "./SignupForm.css";
 import Button from "components/Button/Button";
+import { useDispatch } from "react-redux";
+import { setToast } from "store/slices/toastSlice";
 
 const defaultUserData = {
   name: "",
@@ -22,7 +24,7 @@ const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [userData, setUserData] = useState(defaultUserData);
   const [errors, setErrors] = useState(defaultError);
-
+  const dispatch = useDispatch();
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -44,16 +46,30 @@ const SignupForm = () => {
 
     await userSignup({ name, email, password })
       .then(async (res) => {
-        const { isEmailValid, msg } = await res.json();
-        if (!isEmailValid) {
-          setErrors({ email: msg });
+        console.log(res);
+        if (res.ok) {
+          dispatch(
+            setToast({
+              status: "success",
+              displayMessage:
+                "congratulations! your account has been created. Try signing in",
+            })
+          );
+          setUserData(defaultUserData);
+          setErrors(defaultError);
           return;
         }
-        alert("congratulations! your account has been created. Try signing in");
-        setUserData(defaultUserData);
-        setErrors(defaultError);
+        if (!res.ok) {
+          const { msg } = await res.json();
+          dispatch(setToast({ status: "failure", displayMessage: msg }));
+          return;
+        }
       })
-      .catch((err) => alert(err));
+      .catch((err) =>
+        dispatch(
+          setToast({ status: "failure", displayMessage: JSON.stringify(err) })
+        )
+      );
   };
   return (
     <form className="form" onSubmit={handleSubmit} onChange={handleUserData}>
@@ -62,7 +78,6 @@ const SignupForm = () => {
         className="input-field"
         placeholder="Full Name"
         name="name"
-        required
         value={userData.name}
       />
       <input
@@ -70,7 +85,6 @@ const SignupForm = () => {
         className="input-field"
         placeholder="Email"
         name="email"
-        required
         value={userData.email}
       />
       {errors.email && <span className="input-error">{errors.email}</span>}
@@ -79,7 +93,6 @@ const SignupForm = () => {
           type={showPassword ? "text" : "password"}
           className="input-field"
           placeholder="Password"
-          required
           name="password"
           value={userData.password}
         />
@@ -95,7 +108,6 @@ const SignupForm = () => {
           type={showPassword ? "text" : "password"}
           className="input-field"
           placeholder="Confirm Password"
-          required
           value={userData.confirmPassword}
           name="confirmPassword"
         />

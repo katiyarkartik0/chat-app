@@ -37,25 +37,22 @@ const LoginForm = () => {
 
     await userLogin(userCredentials)
       .then(async (res) => {
-        const { isEmailValid, isPasswordValid, userData, msg, accessToken } =
-          await res.json();
-        if (!isEmailValid) {
-          setErrors((prev) => ({ ...prev, email: msg }));
+        if (res.ok) {
+          const { userData, accessToken, msg } = await res.json();
+          dispatch(setLogin({ accessToken, userData }));
+          dispatch(setToast({ status: "success", displayMessage: msg }));
+          navigate("/chat");
           return;
         }
-        if (!isPasswordValid) {
-          setErrors((prev) => ({ ...prev, password: msg }));
-          return;
+        if (!res.ok) {
+          const { msg } = await res.json();
+          dispatch(setToast({ status: "failure", displayMessage: msg }));
         }
-        dispatch(setLogin({ accessToken, userData }));
-        dispatch(setToast({status:"success",displayMessage:msg}))
-        navigate("/chat");
       })
       .catch((error) => {
-        dispatch(setToast({status:"failure",displayMessage:error}))
+        dispatch(setToast({ status: "failure", displayMessage: error }));
       });
-      setIsLoading(false);
-
+    setIsLoading(false);
   };
 
   return (
@@ -86,7 +83,7 @@ const LoginForm = () => {
       {errors.password && (
         <span className="input-error">{errors.password}</span>
       )}
-            <br></br>
+      <br></br>
 
       {!isLoading && (
         <Button type="submit" text="Log In" style={{ width: "100%" }} />
@@ -103,7 +100,7 @@ const LoginForm = () => {
           })
         }
         text="Generate User Credentials"
-        style={{ width: "100%" }} 
+        style={{ width: "100%" }}
       />
     </form>
   );

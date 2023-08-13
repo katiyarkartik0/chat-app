@@ -19,7 +19,7 @@ function Toast() {
 
   return (
     <div className={`toast-container ${showToast ? "show" : ""} ${toastStatus}`}>
-      <div className={`toast `}>{JSON.stringify(toastMessage)}</div>
+      <div className={`toast `}>{toastMessage}</div>
     </div>
   );
 }

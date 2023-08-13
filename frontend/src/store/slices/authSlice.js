@@ -11,8 +11,10 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setLogin: (state, action) => {
-      state.userData = action.payload.userData;
-      state.accessToken = action.payload.accessToken;
+      const {userData,accessToken} = action.payload
+      console.log(userData,accessToken)
+      state.userData = userData;
+      state.accessToken = accessToken;
     },
     setLogout: (state, action) => {
       state.userData = null;

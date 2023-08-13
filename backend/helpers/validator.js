@@ -2,47 +2,63 @@ const User = require("../models/user");
 
 class Validator {
   constructor() {}
-  inputValidation(arrayOfInputs) {
-    for(let i = 0; i<arrayOfInputs.length;i++){
-      const input = arrayOfInputs[i];
+  inputValidation(inputs) {
+    const arrayOfInputs = Object.keys(inputs);
+    for (let i = 0; i < arrayOfInputs.length; i++) {
+      const inputKey = arrayOfInputs[i];
+      const input = inputs[inputKey];
       if (!input) {
         return {
-          isInputValid: true,
-          msg: `${input} field cannot be empty`,
+          isInputValid: false,
+          msg: `${inputKey} field cannot be empty`,
         };
+      }
+      if (inputKey === "email") {
+        if (
+          /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(input) == false
+        ) {
+          return {
+            isInputValid: false,
+            msg: "email address entered is not valid",
+          };
+        }
       }
     }
     return {
-      isInputValid: false,
+      isInputValid: true,
     };
   }
   async getUser(email, { attempt }) {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) == false) {
-      return {
-        usersData: null,
-        isEmailValid: false,
-        msg: "email address entered is not valid",
-      };
-    }
     const user = await User.findOne({ email });
     if (user) {
-      return {
-        isEmailValid: true,
-        userData: user,
-        msg:
-          attempt == "logIn"
-            ? "user exists, we are good to login "
-            : "user with this email already exists, try signing in with some other email",
-      };
+      if (attempt === "logIn") {
+        return {
+          isNewUserEntry: false,
+          userData: user,
+          msg: "user exists, we are good to login ",
+        };
+      } else if (attempt === "signup") {
+        return {
+          isNewUserEntry: false,
+          userData: user,
+          msg: "user with this email already exists, try signing in with some other email",
+        };
+      }
+    } else {
+      if (attempt === "logIn") {
+        return {
+          isNewUserEntry: true,
+          userData: null,
+          msg: "email not found, try signing-up first",
+        };
+      } else if (attempt === "signup") {
+        return {
+          isNewUserEntry: true,
+          userData: user,
+          msg: "email not in the database,we are good to signup",
+        };
+      }
     }
-    return {
-      isEmailValid: true,
-      userData: null,
-      msg:
-        attempt == "signup"
-          ? "email not in the database,we are good to signup"
-          : "email not found, try signing-up first",
-    };
   }
 }
 
