@@ -50,7 +50,7 @@ const LoginForm = () => {
         }
       })
       .catch((error) => {
-        dispatch(setToast({ status: "failure", displayMessage: error }));
+        dispatch(setToast({ status: "failure", displayMessage: JSON.stringify(error) }));
       });
     setIsLoading(false);
   };

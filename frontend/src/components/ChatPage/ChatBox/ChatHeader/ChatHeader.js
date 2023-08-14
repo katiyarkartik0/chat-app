@@ -13,7 +13,7 @@ const ChatHeader = () => {
     if (isGroupChat) {
       return chatName;
     }
-    return users.find((user) => user._id !== userData._id)?.name || "";
+    return users?.find((user) => user._id !== userData._id)?.name || "";
   };
 
   return (

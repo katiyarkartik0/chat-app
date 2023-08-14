@@ -1,3 +1,4 @@
+const ChatHelper = require("../helpers/chat");
 const Chat = require("../models/chat");
 const User = require("../models/user");
 
@@ -12,26 +13,15 @@ const accessChats = async (req, res) => {
   const userId = req.id;
 
   if (!userId) {
-    return res.status(400).send("UserId param not sent with request");
+    return res.status(400).json({ msg: "UserId param not sent with request" });
   }
+  const { getChat } = new ChatHelper();
+  const chat = await getChat({ userId, recieverUserId });
 
-  let isChat = await Chat.find({
-    isGroupChat: false,
-    $and: [
-      { users: { $elemMatch: { $eq: userId } } },
-      { users: { $elemMatch: { $eq: recieverUserId } } },
-    ],
-  })
-    .populate("users", "-password")
-    .populate("latestMessage");
-
-  isChat = await User.populate(isChat, {
-    path: "latestMessage.sender",
-    select: "name email",
-  });
-
-  if (isChat.length > 0) {
-    res.send(isChat[0]);
+  if (chat) {
+    res
+      .status(200)
+      .json({ chat, msg: "Successfully fetched already present chat" });
   } else {
     const chatData = {
       chatName: "sender",
@@ -40,15 +30,11 @@ const accessChats = async (req, res) => {
     };
 
     try {
-      const createdChat = await Chat.create(chatData);
-      const fullChat = await Chat.findOne({ _id: createdChat._id }).populate(
-        "users",
-        "-password"
-      );
-      res.status(200).json(fullChat);
+      const { createNewChat } = new ChatHelper();
+      const chat = await createNewChat({ chatData });
+      res.status(200).json({ chat, msg: "Successfully created a new chat" });
     } catch (error) {
-      res.status(400);
-      throw new Error(error.message);
+      res.status(400).json({ msg: JSON.stringify(error) });
     }
   }
 };

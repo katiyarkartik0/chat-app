@@ -17,11 +17,13 @@ const ChatWidget = ({ chatItem, isClickable }) => {
     if (!chatItem.isGroupChat) {
       await accessChat({ accessToken, recieverUserId: chatItem._id })
         .then(async (res) => {
-          const response = await res.json();
-          dispatch(setSelectedChat(response));
-          const newChat = allChats.find((chat) => chat._id == response._id);
+          const { chat } = await res.json();
+          dispatch(setSelectedChat(chat));
+          const newChat = allChats.find(
+            (currChat) => currChat._id === chat._id
+          );
           if (!newChat) {
-            dispatch(addToAllChats(response));
+            dispatch(addToAllChats(chat));
           }
         })
         .catch((err) => alert(err));
