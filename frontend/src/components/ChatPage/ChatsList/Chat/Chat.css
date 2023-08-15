@@ -51,7 +51,8 @@
 /* Styles for secondary text */
 .secondary-text {
   font-size: 12px;
-  color: white;
+  color: black;
+  font-weight:bolder;
 }
 
 /* Color transition on hover */

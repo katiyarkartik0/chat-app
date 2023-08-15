@@ -14,7 +14,7 @@ const Message = ({ message }) => {
       <div className={`name-${messageClassName}`}>{sender.name}</div>
       {uploadedFile?.fileName && <File uploadedFile={uploadedFile} />}
       <div className={`content-${messageClassName}`}>{content}</div>
-      <div className={`time-${messageClassName}`}>{createdAt}</div>
+      <div className={`time-${messageClassName}`}>{new Date(createdAt).toLocaleString()}</div>
     </div>
   );
 };
