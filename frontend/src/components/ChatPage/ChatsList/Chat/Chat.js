@@ -1,7 +1,8 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import "./Chat.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getLatestMessageDirectory,
   getNotificationState,
   getSelectedChat,
   getUserData,
@@ -13,6 +14,7 @@ const Chat = ({ chat = {}, notification }) => {
   const dispatch = useDispatch();
   const selectedChat = useSelector(getSelectedChat);
   const notificationState = useSelector(getNotificationState);
+  const latestMessageDirectory = useSelector(getLatestMessageDirectory) || {};
 
   const handleClick = () => {
     dispatch(setSelectedChat(chat));
@@ -32,15 +34,19 @@ const Chat = ({ chat = {}, notification }) => {
     };
   }, [chat]);
 
-  const getLatestMessageDisplay = () => {
+  const getLatestMessageDisplay = useCallback(() => {
     let latestMessage = chat.latestMessage?.content;
+
+    if(latestMessageDirectory[chat._id]){
+      latestMessage = latestMessageDirectory[chat._id];
+    }
     const { isGroupChat } = chat;
     if (isGroupChat && latestMessage) {
       const { sender: { email = "" } = "" } = chat.latestMessage;
       latestMessage = email + ": " + latestMessage;
     }
     return latestMessage;
-  };
+  },[latestMessageDirectory[chat?._id]])
 
   return (
     <button

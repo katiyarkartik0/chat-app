@@ -46,7 +46,6 @@ const SignupForm = () => {
 
     await userSignup({ name, email, password })
       .then(async (res) => {
-        console.log(res);
         if (res.ok) {
           dispatch(
             setToast({

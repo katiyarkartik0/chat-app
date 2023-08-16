@@ -16,7 +16,10 @@ import {
 import "./ChatBox.css";
 import ChatHeader from "./ChatHeader/ChatHeader";
 import ChatBar from "./ChatBar/ChatBar";
-import { setNotification, setNotificationState } from "store/slices/chatSlice";
+import {
+  setLatestMessageDirectory,
+  setNotificationState,
+} from "store/slices/chatSlice";
 
 const ChatBox = () => {
   const [messages, setMessages] = useState([]);
@@ -27,8 +30,6 @@ const ChatBox = () => {
   const messageScrollRef = useRef(null);
   const dispatch = useDispatch();
   const notificationState = useSelector(getNotificationState);
-
-
 
   useEffect(() => {
     const polulateMessages = async () => {
@@ -51,8 +52,7 @@ const ChatBox = () => {
       polulateMessages();
       socket.emit("join chat", selectedChat._id);
     }
-
-  }, [selectedChat,accessToken]);
+  }, [selectedChat, accessToken]);
 
   useEffect(() => {
     const onConnect = () => setSocketConnected(true);
@@ -63,27 +63,41 @@ const ChatBox = () => {
     return () => {
       console.log("DISCONNECTING CONNECTION EVENT");
       socket.off("connected", onConnect);
-
     };
   }, [userData]);
 
   useEffect(() => {
-    const onMessageRecieved = (newMessageRecieved) => {  
-      if (!selectedChat || selectedChat._id !== newMessageRecieved.chat._id) {  
-        const currentNotificationCount =
-          notificationState[newMessageRecieved.chat._id] || 0;
+    const onMessageRecieved = (newMessageRecieved) => {
+      const { _id: selectedChatId = "" } = selectedChat || {};
+      const {
+        chat: { _id: currentMessageChatId },
+      } = newMessageRecieved;
+
+      const isMessageFromNonSelectedChat =
+        !selectedChat || selectedChatId !== currentMessageChatId;
+
+      if (isMessageFromNonSelectedChat) {
+        const nonSelectedChatNotificationCount =
+          notificationState[currentMessageChatId] || 0;
         dispatch(
           setNotificationState({
-            [newMessageRecieved.chat._id]: currentNotificationCount + 1,
+            [currentMessageChatId]: nonSelectedChatNotificationCount + 1,
           })
         );
-      } else if(selectedChat._id === newMessageRecieved.chat._id){
+      } else if (selectedChatId === currentMessageChatId) {
         setMessages([...messages, newMessageRecieved]);
       }
+      dispatch(
+        setLatestMessageDirectory({
+          [currentMessageChatId]: newMessageRecieved.uploadedFile
+            ? "attachment"
+            : newMessageRecieved.content,
+        })
+      );
     };
     socket.on("message recieved", onMessageRecieved);
 
-    return ()=>socket.off("message recieved", onMessageRecieved)
+    return () => socket.off("message recieved", onMessageRecieved);
   });
 
   useEffect(() => {

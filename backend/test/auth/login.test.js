@@ -1,13 +1,15 @@
 process.env.NODE_ENV = "test";
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-chai.use(chaiHttp);
-const expect = chai.expect;
-const server = require("../../server");
 const sinon = require("sinon");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+
+const server = require("../../server");
 const User = require("../../models/user");
+chai.use(chaiHttp);
+
+const expect = chai.expect;
 
 describe("verification of login calls to the server", () => {
   it("Successful Login", (done) => {

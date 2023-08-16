@@ -42,10 +42,8 @@ const fetchPreSignedGetUrl = async (req, res) => {
     return res.status(403).send(req.msg);
   }
   const { fileName } = req.params;
-  console.log(fileName)
   try {
     const preSignedGETUrl = await getObjectUrl({ fileName });
-    console.log(preSignedGETUrl)
     res.status(200).json(preSignedGETUrl);
   } catch (error) {
     res.status(400).json(error);
@@ -65,7 +63,7 @@ const sendMessage = async (req, res) => {
 
   const userId = req.id;
 
-  if (!content || !chatId) {
+  if (!(content || fileName) || !chatId) {
     return res.status(400).send("Invalid data passed into request");
   }
 

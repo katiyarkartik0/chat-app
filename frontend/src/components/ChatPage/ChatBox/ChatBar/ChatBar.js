@@ -2,7 +2,7 @@ import { Loader } from "utils/Loader/Loader";
 import "./ChatBar.css";
 import Button from "components/Button/Button";
 import { getAccessToken, getSelectedChat } from "helpers/selectors";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { sendMessage } from "api/message";
 import { socket } from "components/../socket";
@@ -15,6 +15,7 @@ const ChatBar = ({ messages, setMessages }) => {
   const accessToken = useSelector(getAccessToken);
   const [newMessage, setNewMessage] = useState(defaultMessageState);
   const [isMessageSending, setIsMessageSending] = useState(false);
+  const inputRef = useRef(null);
 
   const handleText = (e) => {
     setNewMessage((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -40,15 +41,16 @@ const ChatBar = ({ messages, setMessages }) => {
       .then(async (res) => {
         const response = await res.json();
         const { message, preSignedPUTUrl } = await response;
-        if (response.preSignedPUTUrl) {
+        if (preSignedPUTUrl) {
           await putFileDataInAWSS3({
-            preSignedUrl: response.preSignedPUTUrl,
+            preSignedUrl: preSignedPUTUrl,
             requestBody: newMessage.file,
             contentType: newMessage.file.type,
           });
         }
-        setMessages([...messages, response.message]);
+        setMessages([...messages, message]);
         setNewMessage(defaultMessageState);
+        inputRef.current.value = "";
         socket.emit("new message", message);
       })
       .catch((err) => alert(err));
@@ -66,24 +68,36 @@ const ChatBar = ({ messages, setMessages }) => {
     return name;
   }, [newMessage]);
 
+  const handleCancelFileUpload = () => {
+    setNewMessage((prev) => ({ ...prev, file: "" }));
+    inputRef.current.value = "";
+  };
+
   return (
     <form
       className="chat-input"
       onSubmit={handleSubmit}
       enctype="multipart/form-data"
     >
-      <div class="file-upload-container">
-        <label className="label-file-upload" for="file-upload-input">{uploadFileButtonName()}</label>
+      <div className="file-upload-container">
+        <label
+          className={`label-file-upload ${newMessage.file ? "disabled" : ""}`}
+          for="file-upload-input"
+        >
+          {uploadFileButtonName()}
+        </label>
         <input
+          disabled={newMessage.file ? true : false}
           type="file"
-          class="file-upload-input"
+          className="file-upload-input"
           id="file-upload-input"
           onChange={handleFileUpload}
+          ref={inputRef}
           hidden
         ></input>
       </div>
       <div
-        onClick={() => setNewMessage((prev) => ({ ...prev, file: "" }))}
+        onClick={handleCancelFileUpload}
         className={`cancel-icon${newMessage.file ? "-active" : ""}`}
       >
         &#10006;
@@ -96,12 +110,6 @@ const ChatBar = ({ messages, setMessages }) => {
         className="message-input"
         name="text"
       />
-      {/* <input
-        type="file"
-        onChange={handleFileUpload}
-        className="uploadFile"
-        name="file"
-      ></input> */}
       {isMessageSending ? <Loader /> : <Button type="submit" text="Send" />}
     </form>
   );

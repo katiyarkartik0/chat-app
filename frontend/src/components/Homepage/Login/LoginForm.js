@@ -95,11 +95,23 @@ const LoginForm = () => {
         type="button"
         onClickEvent={() =>
           setUserCredentials({
-            email: "katiyarkartik0@gmail.com",
-            password: "qwerty",
+            email: "johndoe@gmail.com",
+            password: "johndoe",
           })
         }
-        text="Generate User Credentials"
+        text="Generate Sample1 User Credentials"
+        style={{ width: "100%" }}
+      />
+      <br></br>
+      <Button
+        type="button"
+        onClickEvent={() =>
+          setUserCredentials({
+            email: "richardedward@gmail.com",
+            password: "richardedward",
+          })
+        }
+        text="Generate Sample2 User Credentials"
         style={{ width: "100%" }}
       />
     </form>

@@ -5,6 +5,7 @@ const initialState = {
   selectedChat: null,
   allChats: [],
   notificationState: {},
+  latestMessageDirectory:{}
 };
 
 const chatsSlice = createSlice({
@@ -29,6 +30,11 @@ const chatsSlice = createSlice({
       const notificationObj = action.payload;
       state.notificationState = { ...notificationState, ...notificationObj };
     },
+    setLatestMessageDirectory:(state,action)=>{
+      const {latestMessageDirectory} = state;
+      const latestMessageObject = action.payload;
+      state.latestMessageDirectory = {...latestMessageDirectory,...latestMessageObject}
+    }
   },
   extraReducers(builder) {
     builder.addCase(PURGE, () => {
@@ -42,6 +48,7 @@ export const {
   setAllChats,
   addToAllChats,
   setChatsToDefault,
-  setNotificationState
+  setNotificationState,
+  setLatestMessageDirectory
 } = chatsSlice.actions;
 export default chatsSlice.reducer;

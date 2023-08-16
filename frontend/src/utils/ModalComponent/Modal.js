@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import "./Modal.css";
-import { chatRequest, createRoom } from "api/chat";
+import { createRoom } from "api/chat";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAccessToken } from "helpers/selectors";

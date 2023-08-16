@@ -83,40 +83,4 @@ describe("verification of /api/chat/accessChats", () => {
         done();
       });
   });
-
-  //   it("Unsuccessful signup due to already present email", (done) => {
-  //     const signUpBody = {
-  //       name: "Kartik Katiyar",
-  //       email: "katiyarkartik0@gmail.com",
-  //       password: "qwerty",
-  //     };
-
-  //     const userFindOneStub = sinon.stub(User, "findOne").resolves({
-  //       _id: "64bf7fdbedc92015d28dd35e",
-  //       name: "Kartik Katiyar",
-  //       email: "katiyarkartik0@gmail.com",
-  //       password: "$2b$04$ywFAvBgfDX7XBH/CFYxG1uGWZy4i7JFTjZ37xuXcYJprR/DG9aPgm",
-  //       isAdmin: false,
-  //       __v: 0,
-  //     });
-
-  //     chai
-  //       .request(server)
-  //       .post("/api/auth/signup")
-  //       .send(signUpBody)
-  //       .end((err, res) => {
-  //         const {
-  //           status,
-  //           body: { msg },
-  //         } = res;
-
-  //         expect(status).equal(400);
-  //         expect(msg).equal(
-  //           "user with this email already exists, try signing in with some other email"
-  //         );
-  //         expect(userFindOneStub.calledOnce).to.be.true;
-  //         userFindOneStub.restore();
-  //         done();
-  //       });
-  //   });
 });
