@@ -1,41 +1,6 @@
-const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-const Chat = require("../models/chat");
 const Message = require("../models/message");
-const dotenv = require("dotenv");
-dotenv.config();
 
-const {
-  S3Client,
-  PutObjectCommand,
-  GetObjectCommand,
-} = require("@aws-sdk/client-s3");
-
-const s3client = new S3Client({
-  region: process.env.AWS_S3_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_PROGRAMATIC_USER_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_PROGRAMATIC_USER_SECRET_ACCESS_KEY,
-  },
-});
-
-const putObjectUrl = async ({ fileName, contentType }) => {
-  const command = new PutObjectCommand({
-    Bucket: process.env.AWS_S3_BUCKET_NAME,
-    Key: `${process.env.AWS_S3_BUCKET_KEY}/${fileName}`,
-    ContentType: contentType,
-  });
-  const url = getSignedUrl(s3client, command);
-  return url;
-};
-
-const getObjectUrl = async ({ fileName }) => {
-  const command = new GetObjectCommand({
-    Bucket: process.env.AWS_S3_BUCKET_NAME,
-    Key: `${process.env.AWS_S3_BUCKET_KEY}/${fileName}`,
-  });
-  const url = getSignedUrl(s3client, command);
-  return url;
-};
+const MessageHelper = require("../helpers/message");
 
 const fetchPreSignedGetUrl = async (req, res) => {
   if (req.verified == false) {
@@ -43,6 +8,7 @@ const fetchPreSignedGetUrl = async (req, res) => {
   }
   const { fileName } = req.params;
   try {
+    const { getObjectUrl } = new MessageHelper();
     const preSignedGETUrl = await getObjectUrl({ fileName });
     res.status(200).json(preSignedGETUrl);
   } catch (error) {
@@ -56,6 +22,17 @@ const sendMessage = async (req, res) => {
   }
   const { content, chatId, contentType, fileName } = req.body;
 
+  const isContentAbsent = !content;
+  const isFileAttachmentAbsent = !fileName;
+  const isChatIdAbsent = !chatId;
+
+  if ((isContentAbsent && isFileAttachmentAbsent) || isChatIdAbsent) {
+    return res.status(400).json({ msg: "Invalid data passed into request" });
+  }
+
+  const { saveMessage, findCurrentMessage, putObjectUrl, updateLatestMessage } =
+    new MessageHelper();
+
   let preSignedPUTUrl;
   if (fileName && contentType) {
     preSignedPUTUrl = await putObjectUrl({ fileName, contentType });
@@ -63,44 +40,22 @@ const sendMessage = async (req, res) => {
 
   const userId = req.id;
 
-  if (!(content || fileName) || !chatId) {
-    return res.status(400).send("Invalid data passed into request");
-  }
-
   try {
-    let message = new Message({
-      sender: userId,
-      content: content,
-      chat: chatId,
-      uploadedFile: {
-        fileName,
-        contentType,
-      },
+    const messageObject = await saveMessage({
+      userId,
+      content,
+      chatId,
+      fileName,
+      contentType,
     });
-
-    await message.save();
-    await Message.find({
-      sender: userId,
-      content: content,
-      chat: chatId,
-    })
-      .sort({ $natural: -1 })
-      .limit(1)
-      .populate("sender", "name")
-      .populate("chat")
-      .then(async (results) => {
-        results = await Message.populate(results, {
-          path: "chat.users",
-          select: "name email",
-        });
-        await Chat.findByIdAndUpdate(chatId, { latestMessage: message });
-        res.status(200).json({
-          message: results[0],
-          preSignedPUTUrl,
-        });
-      });
+    const message = await findCurrentMessage({ userId, chatId, content });
+    await updateLatestMessage({ chatId, latestMessage: messageObject });
+    res.status(200).json({
+      message,
+      preSignedPUTUrl,
+    });
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).json({ msg: "Internal server error" });
   }
 };
 
@@ -116,7 +71,7 @@ const fetchAllMessages = async (req, res) => {
 
     res.status(200).json(messages);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).send({ msg: "Internal server error" });
   }
 };
 
