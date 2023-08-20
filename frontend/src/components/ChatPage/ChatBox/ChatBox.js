@@ -20,6 +20,7 @@ import {
   setLatestMessageDirectory,
   setNotificationState,
 } from "store/slices/chatSlice";
+import { setToast } from "store/slices/toastSlice";
 
 const ChatBox = () => {
   const [messages, setMessages] = useState([]);
@@ -38,15 +39,24 @@ const ChatBox = () => {
         accessToken,
       })
         .then(async (res) => {
-          const response = await res.json();
-          setMessages(response);
-          dispatch(
-            setNotificationState({
-              [selectedChat._id]: 0,
-            })
-          );
+          if (res.ok) {
+            const { messages } = await res.json();
+            setMessages(messages);
+            dispatch(
+              setNotificationState({
+                [selectedChat._id]: 0,
+              })
+            );
+          }
         })
-        .catch((err) => alert(err));
+        .catch((error) =>
+          dispatch(
+            setToast({
+              status: "failure",
+              displayMessage: JSON.stringify(error),
+            })
+          )
+        );
     };
     if (selectedChat) {
       polulateMessages();

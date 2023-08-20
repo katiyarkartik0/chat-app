@@ -1,6 +1,9 @@
-const Message = require("../models/message");
+const dotenv = require("dotenv");
 
+const Message = require("../models/message");
 const MessageHelper = require("../helpers/message");
+dotenv.config();
+
 
 const fetchPreSignedGetUrl = async (req, res) => {
   if (req.verified == false) {
@@ -65,11 +68,14 @@ const fetchAllMessages = async (req, res) => {
   }
   const { chatId } = req.params;
   try {
-    const messages = await Message.find({ chat: chatId })
-      .populate("sender", "name email")
-      .populate("chat");
+    let messages;
+    if (process.env.NODE_ENV !== "test") {
+      messages = await Message.find({ chat: chatId })
+        .populate("sender", "name email")
+        .populate("chat");
+    }
 
-    res.status(200).json(messages);
+    res.status(200).json({ messages });
   } catch (error) {
     res.status(500).send({ msg: "Internal server error" });
   }

@@ -68,7 +68,7 @@ class MessageHelper {
     return url;
   }
 
-getObjectUrl({ fileName }) {
+  getObjectUrl({ fileName }) {
     const command = new GetObjectCommand({
       Bucket: process.env.AWS_S3_BUCKET_NAME,
       Key: `${process.env.AWS_S3_BUCKET_KEY}/${fileName}`,
