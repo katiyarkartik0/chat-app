@@ -49,6 +49,9 @@ Start the React app at the entry point i.e., frontend/src/index.js:
 npm start
 ```
 
+## Database
+This repository contains MongoDB models for a chat application. The models are created using Mongoose, a popular MongoDB object modeling tool for Node.js.
+
 ## API ENDPOINTS
 
 * GET /: Returns a welcome message.
