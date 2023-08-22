@@ -157,8 +157,12 @@ const fetchPreSignedGetUrl = async (req, res) => {
 * If successful, it responds with a JSON object containing the pre-signed URL and a status code of 200 (OK).
 * If there is an error during the process, it responds with a JSON representation of the error and a status code of 400 (Bad Request).
 
+## Testing using mocha,chai,sinon
 
-
+To run the tests for this application, use the following command:
+```
+npm run test
+```
 
 ## WebSocket Integration
 The app uses Socket.io for real-time communication. Socket.io allows users to join chat rooms and send/receive messages instantly.
