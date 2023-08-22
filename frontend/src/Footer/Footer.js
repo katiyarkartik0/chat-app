@@ -18,35 +18,35 @@ const Footer = () => {
         <br></br>
         <div className="social-icons">
           <a
-            href="mailto:your.email@gmail.com"
+            href="mailto:katiyarkartik0@gmail.com@gmail.com"
             target="_blank"
             rel="noopener noreferrer"
           >
             <FaEnvelope className="icon" />
           </a>
           <a
-            href="https://www.linkedin.com/in/your-linkedin"
+            href="https://www.linkedin.com/in/kartik-katiyar-80b749200/"
             target="_blank"
             rel="noopener noreferrer"
           >
             <FaLinkedin className="icon" />
           </a>
           <a
-            href="https://www.instagram.com/your-instagram"
+            href="https://www.instagram.com/katiyarkartik0/"
             target="_blank"
             rel="noopener noreferrer"
           >
             <FaInstagram className="icon" />
           </a>
           <a
-            href="https://twitter.com/your-twitter"
+            href="https://twitter.com/katiyarkartik0"
             target="_blank"
             rel="noopener noreferrer"
           >
             <FaTwitter className="icon" />
           </a>
           <a
-            href="https://twitter.com/your-twitter"
+            href="https://github.com/katiyarkartik0/"
             target="_blank"
             rel="noopener noreferrer"
           >
