@@ -35,6 +35,20 @@ MONGO_URL=your_mongodb_connection_string
 PORT=5000
 ```
 
+## Entry point
+For backend `backend/server.js` is the entry point of the application and for frontend `frontend/src/index.js` is the entry point of the application
+
+## Running the Application
+Start the Express.js server at the entry point i.e., backend/server.js:
+```
+npm start 
+```
+
+Start the React app at the entry point i.e., frontend/src/index.js:
+```
+npm start
+```
+
 ## API ENDPOINTS
 
 * GET /: Returns a welcome message.
