@@ -93,9 +93,9 @@ Your app includes various optimization techniques to ensure high performance:
 - **Memoization**: `useMemo` and `useCallback` are employed to optimize expensive calculations and reduce unnecessary recalculations.
 
 ### Checkout README.md for backend implementation
-[Link Text](https://github.com/katiyarkartik0/chat-app/blob/main/backend/README.md)
+[Backend](https://github.com/katiyarkartik0/chat-app/blob/main/backend/README.md)
 
 ### Checkout README.md for chat-app overview
-[Link Text](https://github.com/katiyarkartik0/chat-app/blob/main/README.md)
+[Features of chat app](https://github.com/katiyarkartik0/chat-app/blob/main/README.md)
 
 
