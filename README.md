@@ -48,7 +48,7 @@ Enjoy using the Chat Application and happy chatting!
 
 
 ### Checkout README.md for backend implementation
-[Link Text](https://github.com/katiyarkartik0/chat-app/blob/main/backend/README.md)
+[Backend](https://github.com/katiyarkartik0/chat-app/blob/main/backend/README.md)
 
 ### Checkout README.md for frontend implementation
-[Link Text](https://github.com/katiyarkartik0/chat-app/blob/main/frontend/README.md)
+[Frontend](https://github.com/katiyarkartik0/chat-app/blob/main/frontend/README.md)
