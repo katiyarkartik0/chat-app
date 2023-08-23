@@ -1,4 +1,4 @@
-# Chat App Overview
+# Chat App Backend implementation
 
 This repository contains the source code for a chat application built using Express.js, MongoDB, and Socket.io. The app allows users to communicate in real-time through chat rooms, sending and receiving messages.
 
@@ -186,5 +186,11 @@ The app uses Socket.io for real-time communication. Socket.io allows users to jo
 
 ## Contributing
 Contributions are welcome! Feel free to submit pull requests or open issues if you find any problems or improvements.
+
+### Checkout README.md for chat-app overview
+[Link Text](https://github.com/katiyarkartik0/chat-app/blob/main/README.md)
+
+### Checkout README.md for frontend implementation
+[Link Text](https://github.com/katiyarkartik0/chat-app/blob/main/frontend/README.md)
 
 
