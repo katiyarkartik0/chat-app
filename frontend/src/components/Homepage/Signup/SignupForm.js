@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { authRequest, userSignup } from "api/auth";
+import { userSignup } from "api/auth";
 
 import "./SignupForm.css";
 import Button from "components/Button/Button";
 import { useDispatch } from "react-redux";
 import { setToast } from "store/slices/toastSlice";
+import { fieldValidation } from "helpers/validator";
+import { Loader } from "utils/Loader/Loader";
 
 const defaultUserData = {
   name: "",
@@ -21,6 +23,7 @@ const defaultError = {
 };
 
 const SignupForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [userData, setUserData] = useState(defaultUserData);
   const [errors, setErrors] = useState(defaultError);
@@ -34,16 +37,15 @@ const SignupForm = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, email, password, confirmPassword } = userData;
-    if (password !== confirmPassword) {
-      setErrors({
-        password: "make sure to match the password with confirm password",
-        confirmPassword:
-          "make sure to match the password with confirm password",
-      });
+    const { name, email, password } = userData;
+
+    const { isDataValid, msg, field } = fieldValidation(userData);
+
+    if (!isDataValid) {
+      setErrors({ [field]: msg });
       return;
     }
-
+    setIsLoading(true);
     await userSignup({ name, email, password })
       .then(async (res) => {
         if (res.ok) {
@@ -55,10 +57,7 @@ const SignupForm = () => {
             })
           );
           setUserData(defaultUserData);
-          setErrors(defaultError);
-          return;
-        }
-        if (!res.ok) {
+        } else if (!res.ok) {
           const { msg } = await res.json();
           dispatch(setToast({ status: "failure", displayMessage: msg }));
           return;
@@ -69,6 +68,8 @@ const SignupForm = () => {
           setToast({ status: "failure", displayMessage: JSON.stringify(err) })
         )
       );
+    setErrors(defaultError);
+    setIsLoading(false);
   };
   return (
     <form className="form" onSubmit={handleSubmit} onChange={handleUserData}>
@@ -79,6 +80,7 @@ const SignupForm = () => {
         name="name"
         value={userData.name}
       />
+      {errors.name && <span className="input-error">{errors.name}</span>}
       <input
         type="text"
         className="input-field"
@@ -117,10 +119,8 @@ const SignupForm = () => {
       {errors.confirmPassword && (
         <span className="input-error">{errors.confirmPassword}</span>
       )}
-
-      {/* <label htmlFor="profilePicture" className="uploadButtonLabel">Upload a Profile Picture</label>
-      <input type="file" className="input-field-file" id="profilePicture" accept="image/*" placeholder="" required /> */}
-      <Button type="submit" text="Sign Up" />
+      {!isLoading && <Button type="submit" text="Sign Up" />}
+      {isLoading && <Loader />}
     </form>
   );
 };

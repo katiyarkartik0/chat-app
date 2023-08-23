@@ -5,19 +5,27 @@ import { useDispatch } from "react-redux";
 import { userLogin } from "api/auth";
 import { setLogin } from "store/slices/authSlice";
 
-import "./LoginForm.css";
 import Button from "components/Button/Button";
 import { Loader } from "utils/Loader/Loader";
 import { setToast } from "store/slices/toastSlice";
+import { fieldValidation } from "helpers/validator";
+
+import "./LoginForm.css";
+
+const defaultUserCredentials = {
+  email: "",
+  password: "",
+};
+
+const defaultError = {};
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [userCredentials, setUserCredentials] = useState({
-    email: "",
-    password: "",
-  });
+  const [userCredentials, setUserCredentials] = useState(
+    defaultUserCredentials
+  );
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState(defaultError);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const togglePasswordVisibility = () => {
@@ -33,8 +41,12 @@ const LoginForm = () => {
 
   const hanldeSubmit = async (e) => {
     e.preventDefault();
+    const { isDataValid, field, msg } = fieldValidation(userCredentials);
+    if (!isDataValid) {
+      setErrors({ [field]: msg });
+      return;
+    }
     setIsLoading(true);
-
     await userLogin(userCredentials)
       .then(async (res) => {
         if (res.ok) {
@@ -50,8 +62,11 @@ const LoginForm = () => {
         }
       })
       .catch((error) => {
-        dispatch(setToast({ status: "failure", displayMessage: JSON.stringify(error) }));
+        dispatch(
+          setToast({ status: "failure", displayMessage: JSON.stringify(error) })
+        );
       });
+    setErrors(defaultError);
     setIsLoading(false);
   };
 
@@ -63,7 +78,6 @@ const LoginForm = () => {
         onChange={handleEmail}
         className={`input-field${errors.email ? "-error" : ""}`}
         placeholder="Email"
-        required
       />
       {errors.email && <span className="input-error">{errors.email}</span>}
       <br></br>
@@ -73,7 +87,6 @@ const LoginForm = () => {
           type={showPassword ? "text" : "password"}
           className={`input-field${errors.password ? "-error" : ""}`}
           placeholder="Password"
-          required
           value={userCredentials.password}
         />
         <span className="show-hide" onClick={togglePasswordVisibility}>
