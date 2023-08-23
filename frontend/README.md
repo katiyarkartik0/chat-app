@@ -1,4 +1,4 @@
-# React App with Redux Toolkit, React Router, and Optimizations
+# Chat App Front-End Implementation
 
 Welcome to the README.md file for the chat app! This document provides an overview of your app and its features, technologies used, and how to get started.
 
@@ -91,4 +91,11 @@ Your app includes various optimization techniques to ensure high performance:
 - **Redux Toolkit**: Efficient state management reduces unnecessary re-renders and enhances overall performance.
 
 - **Memoization**: `useMemo` and `useCallback` are employed to optimize expensive calculations and reduce unnecessary recalculations.
+
+### Checkout README.md for backend implementation
+[Link Text](https://github.com/katiyarkartik0/chat-app/blob/main/backend/README.md)
+
+### Checkout README.md for chat-app overview
+[Link Text](https://github.com/katiyarkartik0/chat-app/blob/main/README.md)
+
 
