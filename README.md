@@ -45,3 +45,10 @@ Welcome to the Chat Application! This README.md file provides an overview of the
 To get started with the Chat Application, follow the installation and usage instructions provided in the project's documentation. Make sure to create an account or log in to access the features mentioned above.
 
 Enjoy using the Chat Application and happy chatting!
+
+
+### Checkout README.md for backend implementation
+[Link Text](https://github.com/katiyarkartik0/chat-app/blob/main/backend/README.md)
+
+### Checkout README.md for frontend implementation
+[Link Text](https://github.com/katiyarkartik0/chat-app/blob/main/frontend/README.md)
