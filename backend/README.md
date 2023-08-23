@@ -188,9 +188,9 @@ The app uses Socket.io for real-time communication. Socket.io allows users to jo
 Contributions are welcome! Feel free to submit pull requests or open issues if you find any problems or improvements.
 
 ### Checkout README.md for chat-app overview
-[Link Text](https://github.com/katiyarkartik0/chat-app/blob/main/README.md)
+[Features of Chat-app](https://github.com/katiyarkartik0/chat-app/blob/main/README.md)
 
 ### Checkout README.md for frontend implementation
-[Link Text](https://github.com/katiyarkartik0/chat-app/blob/main/frontend/README.md)
+[Frontend](https://github.com/katiyarkartik0/chat-app/blob/main/frontend/README.md)
 
 
