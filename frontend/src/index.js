@@ -13,9 +13,9 @@ export const persistor = persistStore(store);
 root.render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>
-      <Toast/>
+      <Toast />
       <App />
-      <Footer/>
+      <Footer />
     </PersistGate>
   </Provider>
 );

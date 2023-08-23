@@ -90,7 +90,6 @@ const LoginForm = () => {
       )}
       {isLoading && <Loader />}
       <br></br>
-      {/* <br></br> */}
       <Button
         type="button"
         onClickEvent={() =>
