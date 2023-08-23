@@ -75,7 +75,6 @@ Your app follows a well-organized folder structure to maintain code clarity and 
 
 - **src**: Contains your application's source code.
   - **components**: Reusable React components.
-  - **features**: Redux Toolkit slices for different features.
   - **pages**: Top-level React components representing different pages.
   - **router**: Configuration for React Router.
   - **store**: Redux store configuration.
