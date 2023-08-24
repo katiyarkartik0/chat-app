@@ -5,7 +5,7 @@ import LoginForm from "components/Homepage/Login/LoginForm";
 import Link from "components/Link/Link";
 
 import Button from "components/Button/Button";
-import logo from "utils/Heraldlogo/herald_logo.svg";
+import logo from "utils/HiveLogo/hive_logo.png";
 
 import "./Homepage.css";
 
@@ -17,11 +17,12 @@ export const HomePage = () => {
 
   return (
     <>
+      <br></br>
       <div className="form-container">
-        <div className="form-header">
+        <div className="form-header" >
           <img
             src={logo}
-            alt="Herald, a chat app"
+            alt="Hive, a chat app"
             loading="lazy"
             width="250px"
           />{" "}
@@ -30,23 +31,35 @@ export const HomePage = () => {
           <div className="button-box">
             <Button
               type="click"
-              onClickEvent={()=>setIsLogin(true)}
+              onClickEvent={() => setIsLogin(true)}
               style={isLogin ? activeButtonStyles : inActiveButtonStyles}
               text="Already have an account"
             />
             <Button
               type="click"
-              onClickEvent={()=>setIsLogin(false)}
+              onClickEvent={() => setIsLogin(false)}
               style={!isLogin ? activeButtonStyles : inActiveButtonStyles}
               text="Register"
             />
           </div>
           {isLogin ? <LoginForm /> : <SignupForm />}
           <div className="listOfLinks">
-          <Link url="https://github.com/katiyarkartik0/chat-app/blob/main/README.md" text="for users" emoji="🥂" />
-          <Link url="https://github.com/katiyarkartik0/chat-app/blob/main/frontend/README.md" text="for frontend developers" emoji="☕" />
-          <Link url="https://github.com/katiyarkartik0/chat-app/blob/main/backend/README.md" text="for backend developers" emoji="🍹" />
-        </div>
+            <Link
+              url="https://github.com/katiyarkartik0/chat-app/blob/main/README.md"
+              text="for users"
+              emoji="🥂"
+            />
+            <Link
+              url="https://github.com/katiyarkartik0/chat-app/blob/main/frontend/README.md"
+              text="for frontend developers"
+              emoji="☕"
+            />
+            <Link
+              url="https://github.com/katiyarkartik0/chat-app/blob/main/backend/README.md"
+              text="for backend developers"
+              emoji="🍹"
+            />
+          </div>
         </div>
       </div>
       <br></br>
