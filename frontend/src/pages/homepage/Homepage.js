@@ -43,11 +43,13 @@ export const HomePage = () => {
           </div>
           {isLogin ? <LoginForm /> : <SignupForm />}
           <div className="listOfLinks">
-          <Link url="https://github.com/katiyarkartik0/chat-app/blob/main/frontend/README.md" text="for users" emoji="🥂" />
-          <Link url="https://github.com/katiyarkartik0/chat-app/blob/main/README.md" text="for developers" emoji="☕" />
+          <Link url="https://github.com/katiyarkartik0/chat-app/blob/main/README.md" text="for users" emoji="🥂" />
+          <Link url="https://github.com/katiyarkartik0/chat-app/blob/main/frontend/README.md" text="for frontend developers" emoji="☕" />
+          <Link url="https://github.com/katiyarkartik0/chat-app/blob/main/backend/README.md" text="for backend developers" emoji="🍹" />
         </div>
         </div>
       </div>
+      <br></br>
     </>
   );
 };
