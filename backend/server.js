@@ -33,10 +33,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    const server = app.listen(
-      process.env.PORT,
-      console.log("listening to port 5000")
-    );
+    const server = app.listen(process.env.PORT);
     const io = new Server(server, {
       cors: {
         origin: "http://localhost:3000",
@@ -46,19 +43,16 @@ mongoose
     const onlineUsers = new Set();
 
     io.on("connection", (socket) => {
-      console.log("connected to socket.io");
       const onSetup = (userData) => {
         socket.join(userData._id);
         socket.emit("connected");
       };
       const onJoinChat = (room) => {
         socket.join(room);
-        console.log("client joined" + room);
       };
 
       const onNewMessage = (newMessageRecieved) => {
         const { chat } = newMessageRecieved;
-        // console.log(newMessageRecieved);
         if (!chat.users) {
           return console.log("chat.users not defined");
         }
@@ -103,7 +97,7 @@ mongoose
       socket.on("new message", onNewMessage);
 
       socket.on("login", onUserLogin);
-      
+
       socket.on("logout", onUserLogout);
     });
   })

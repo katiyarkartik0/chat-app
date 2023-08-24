@@ -43,7 +43,6 @@ const ChatPage = () => {
     socket.on("connected", onConnect);
 
     return () => {
-      console.log("DISCONNECTING CONNECTION EVENT");
       socket.off("connected", onConnect);
     };
   }, [userData]);
