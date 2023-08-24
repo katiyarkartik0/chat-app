@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import "./Chat.css";
 import { useDispatch, useSelector } from "react-redux";
+import OnlineWatermark from "components/OnlineWatermark/OnlineWatermark";
 import {
   getLatestMessageDirectory,
   getNotificationState,
@@ -27,17 +28,19 @@ const Chat = ({ chat = {}, notification }) => {
       return { name: chatName, secondaryText: "" };
     }
     const { users } = chat;
-    const currentUser = users.find(({ _id }) => _id != userData._id);
+    const friend = users.find(({ _id }) => _id !== userData._id);
     return {
-      name: currentUser?.name,
-      email: currentUser?.email,
+      name: friend?.name,
+      email: friend?.email,
     };
   }, [chat]);
+
+
 
   const getLatestMessageDisplay = useCallback(() => {
     let latestMessage = chat.latestMessage?.content;
 
-    if(latestMessageDirectory[chat._id]){
+    if (latestMessageDirectory[chat._id]) {
       latestMessage = latestMessageDirectory[chat._id];
     }
     const { isGroupChat } = chat;
@@ -45,8 +48,11 @@ const Chat = ({ chat = {}, notification }) => {
       const { sender: { email = "" } = "" } = chat.latestMessage;
       latestMessage = email + ": " + latestMessage;
     }
+    if(latestMessage.length>21){
+      latestMessage = latestMessage.substring(0,21) + "..."
+    }
     return latestMessage;
-  },[latestMessageDirectory[chat?._id]])
+  }, [latestMessageDirectory[chat?._id]]);
 
   return (
     <button
@@ -55,11 +61,14 @@ const Chat = ({ chat = {}, notification }) => {
       }`}
       onClick={handleClick}
     >
-      <div className="primary-text">{email?email:name}</div>
-      <div className="secondary-text">{getLatestMessageDisplay()}</div>
-      {notificationState[chat._id] > 0 && (
-        <div className="notification">{notificationState[chat._id]}</div>
-      )}
+      <div className="primary-text">{email ? email : name}</div>
+      <div className="interactionContainer">
+        {<OnlineWatermark chat={chat} />}
+        <div className="secondary-text">{getLatestMessageDisplay()}</div>
+        {notificationState[chat._id] > 0 && (
+          <div className="notification">{notificationState[chat._id]}</div>
+        )}
+      </div>
     </button>
   );
 };

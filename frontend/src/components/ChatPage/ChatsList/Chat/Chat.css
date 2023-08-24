@@ -16,7 +16,7 @@
   position: relative;
 }
 .notification{
-  position: absolute;
+  /* position: absolute; */
   right: 10px;
   background-color: #25D366;
   height: 20px;
@@ -40,6 +40,14 @@
   width: 100%;
   flex-direction: column;
   align-items: center;
+}
+
+.interactionContainer{
+  display: flex;
+  align-items: center;
+  /* justify-content: space-evenly; */
+  justify-content: space-evenly;
+  width: 100%;
 }
 
 /* Styles for primary text */

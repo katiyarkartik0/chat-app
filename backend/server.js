@@ -18,7 +18,6 @@ app.use(routes);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
 app.get("/", (req, res) => {
   res.status(200).send("Wlcome");
 });
@@ -36,13 +35,15 @@ mongoose
   .then(() => {
     const server = app.listen(
       process.env.PORT,
-      console.log("listening to post 5000")
+      console.log("listening to port 5000")
     );
     const io = new Server(server, {
       cors: {
         origin: "http://localhost:3000",
       },
     });
+
+    const onlineUsers = new Set();
 
     io.on("connection", (socket) => {
       console.log("connected to socket.io");
@@ -57,7 +58,7 @@ mongoose
 
       const onNewMessage = (newMessageRecieved) => {
         const { chat } = newMessageRecieved;
-        console.log(newMessageRecieved)
+        // console.log(newMessageRecieved);
         if (!chat.users) {
           return console.log("chat.users not defined");
         }
@@ -70,12 +71,40 @@ mongoose
         });
       };
 
+      const onUserLogin = ({ userData, allChats }) => {
+        onlineUsers.add(userData._id);
+        for (let i = 0; i < allChats.length; i++) {
+          const chat = allChats[i];
+          chat.users?.forEach((user) => {
+            if (userData._id !== user._id && onlineUsers.has(user._id)) {
+              socket.in(user._id).emit("setUserOnline", userData._id);
+              io.in(userData._id).emit("setUserOnline", user._id);
+            }
+          });
+        }
+      };
+
+      const onUserLogout = ({ userData, allChats }) => {
+        onlineUsers.delete(userData._id);
+        for (let i = 0; i < allChats.length; i++) {
+          const chat = allChats[i];
+          chat.users?.forEach((user) => {
+            if (onlineUsers.has(user._id)) {
+              socket.in(user._id).emit("setUserOffline", userData._id);
+            }
+          });
+        }
+      };
+
       socket.on("setup", onSetup);
 
       socket.on("join chat", onJoinChat);
 
       socket.on("new message", onNewMessage);
 
+      socket.on("login", onUserLogin);
+      
+      socket.on("logout", onUserLogout);
     });
   })
   .catch((error) => console.log(error));

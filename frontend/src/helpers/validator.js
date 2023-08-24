@@ -33,8 +33,7 @@ export const fieldValidation = (collectionOfFields) => {
       };
     }
     if (field === "password" && fields.includes("confirmPassword")) {
-      if (fieldValue != collectionOfFields["confirmPassword"]) {
-        debugger
+      if (fieldValue !== collectionOfFields["confirmPassword"]) {
         return {
           isDataValid: false,
           field,

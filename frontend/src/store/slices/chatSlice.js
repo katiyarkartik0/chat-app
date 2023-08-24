@@ -5,7 +5,8 @@ const initialState = {
   selectedChat: null,
   allChats: [],
   notificationState: {},
-  latestMessageDirectory:{}
+  latestMessageDirectory: {},
+  onlineUsers: [],
 };
 
 const chatsSlice = createSlice({
@@ -30,11 +31,25 @@ const chatsSlice = createSlice({
       const notificationObj = action.payload;
       state.notificationState = { ...notificationState, ...notificationObj };
     },
-    setLatestMessageDirectory:(state,action)=>{
-      const {latestMessageDirectory} = state;
+    setLatestMessageDirectory: (state, action) => {
+      const { latestMessageDirectory } = state;
       const latestMessageObject = action.payload;
-      state.latestMessageDirectory = {...latestMessageDirectory,...latestMessageObject}
-    }
+      state.latestMessageDirectory = {
+        ...latestMessageDirectory,
+        ...latestMessageObject,
+      };
+    },
+    setOnline: (state, action) => {
+      const { userId } = action.payload;
+      state.onlineUsers.push(userId);
+    },
+    setOffline: (state, action) => {
+      const { userId } = action.payload;
+      const filteredOnlineUsers = state.onlineUsers.filter(
+        (onlineUserId) => onlineUserId !== userId
+      );
+      state.onlineUsers = filteredOnlineUsers;
+    },
   },
   extraReducers(builder) {
     builder.addCase(PURGE, () => {
@@ -49,6 +64,8 @@ export const {
   addToAllChats,
   setChatsToDefault,
   setNotificationState,
-  setLatestMessageDirectory
+  setLatestMessageDirectory,
+  setOnline,
+  setOffline,
 } = chatsSlice.actions;
 export default chatsSlice.reducer;

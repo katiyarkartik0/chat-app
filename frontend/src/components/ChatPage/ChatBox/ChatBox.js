@@ -24,7 +24,6 @@ import { setToast } from "store/slices/toastSlice";
 
 const ChatBox = () => {
   const [messages, setMessages] = useState([]);
-  const [socketConnected, setSocketConnected] = useState(false);
   const selectedChat = useSelector(getSelectedChat);
   const accessToken = useSelector(getAccessToken);
   const userData = useSelector(getUserData);
@@ -63,18 +62,6 @@ const ChatBox = () => {
       socket.emit("join chat", selectedChat._id);
     }
   }, [selectedChat, accessToken]);
-
-  useEffect(() => {
-    const onConnect = () => setSocketConnected(true);
-    socket.emit("setup", userData);
-
-    socket.on("connected", onConnect);
-
-    return () => {
-      console.log("DISCONNECTING CONNECTION EVENT");
-      socket.off("connected", onConnect);
-    };
-  }, [userData]);
 
   useEffect(() => {
     const onMessageRecieved = (newMessageRecieved) => {

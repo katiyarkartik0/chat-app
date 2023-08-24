@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 
-import { getUserData } from "helpers/selectors";
-
+import { getAllChats, getUserData } from "helpers/selectors";
+import {socket} from "components/../socket.js"
 import "./Header.css";
 import Button from "components/Button/Button";
 import { persistor } from "index";
@@ -17,8 +17,10 @@ const Header = ({ setShowSideDrawer, updateSearch }) => {
   const handleToggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
+  const allChats = useSelector(getAllChats)
 
   const handleLogout = () => {
+    socket.emit("logout",{userData,allChats});
     persistor.purge();
     navigate("/");
   };

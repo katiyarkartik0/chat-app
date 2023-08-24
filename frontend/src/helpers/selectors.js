@@ -9,3 +9,5 @@ export const getSearchedChatsAndUsers = (state) =>
 export const getToastContent = (state)=> state.toast
 
 export const getLatestMessageDirectory = (state)=>state.chats.latestMessageDirectory;
+
+export const getOnlineUsers = (state)=>state.chats.onlineUsers;
