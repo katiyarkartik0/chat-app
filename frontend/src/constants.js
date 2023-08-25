@@ -1,1 +1,1 @@
-export const ENDPOINT = "https://chat-app-backend-i4oj.onrender.com/"
+export const ENDPOINT = "http://localhost:5000"
