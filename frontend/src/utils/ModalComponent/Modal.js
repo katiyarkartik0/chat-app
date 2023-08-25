@@ -84,7 +84,7 @@ export const Modal = ({ toggleModal }) => {
                 &times;
               </span>
               <form id="roomForm" onSubmit={handleSubmit}>
-                <label for="roomName">Room Name:</label>
+                <label htmlFor="roomName">Room Name:</label>
                 <input
                   type="text"
                   id="roomName"

@@ -89,12 +89,12 @@ const ChatBar = ({ messages, setMessages }) => {
     <form
       className="chat-input"
       onSubmit={handleSubmit}
-      enctype="multipart/form-data"
+      encType="multipart/form-data"
     >
       <div className="file-upload-container">
         <label
           className={`label-file-upload ${newMessage.file ? "disabled" : ""}`}
-          for="file-upload-input"
+          htmlFor="file-upload-input"
         >
           {uploadFileButtonName()}
         </label>

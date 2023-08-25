@@ -36,15 +36,11 @@ const Chat = ({ chat = {}, notification }) => {
   }, [chat]);
 
   const getLatestMessageDisplay = useCallback(() => {
+    console.log(chat)
     let latestMessage = chat.latestMessage?.content;
 
     if (latestMessageDirectory[chat._id]) {
       latestMessage = latestMessageDirectory[chat._id];
-    }
-    const { isGroupChat } = chat;
-    if (isGroupChat && latestMessage) {
-      const { sender: { name ="" } = "" } = chat.latestMessage;
-      latestMessage = name + ": " + latestMessage;
     }
     if (typeof latestMessage === "string" && latestMessage.length > 21) {
       latestMessage = latestMessage.substring(0, 21) + "...";

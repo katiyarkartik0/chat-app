@@ -19,7 +19,7 @@ const SelectChatOrRoomSvg = () => {
           r="140"
           fill="#ffffff"
           stroke="#000000"
-          stroke-width="5"
+          strokeWidth="5"
         />
 
         {/* <!-- Panda ears --> */}
@@ -29,7 +29,7 @@ const SelectChatOrRoomSvg = () => {
           r="30"
           fill="#ffffff"
           stroke="#000000"
-          stroke-width="5"
+          strokeWidth="5"
         />
         <circle
           cx="230"
@@ -37,7 +37,7 @@ const SelectChatOrRoomSvg = () => {
           r="30"
           fill="#ffffff"
           stroke="#000000"
-          stroke-width="5"
+          strokeWidth="5"
         />
 
         {/* <!-- Panda eyes --> */}
@@ -56,7 +56,7 @@ const SelectChatOrRoomSvg = () => {
           d="M120,220 Q150,260 180,220"
           fill="none"
           stroke="#000000"
-          stroke-width="10"
+          strokeWidth="10"
         />
 
         {/* <!-- Panda cheeks --> */}
@@ -68,10 +68,10 @@ const SelectChatOrRoomSvg = () => {
       <text
         x="50%"
         y="75%"
-        dominant-baseline="middle"
-        text-anchor="middle"
-        font-family="Arial, sans-serif"
-        font-size="14"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        fontFamily="Arial, sans-serif"
+        fontSize="14"
         fill="#333333"
       >
         Please select a chat or a room
