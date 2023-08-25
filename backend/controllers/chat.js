@@ -80,15 +80,26 @@ const createRoom = async (req, res) => {
     isGroupChat: true,
     users: [userId],
   };
+  try {
+    const isChatNameAlreadyExist = await Chat.findOne({ chatName: roomName });
+    if (isChatNameAlreadyExist) {
+      return res
+        .status(400)
+        .json({ msg: "a chat of this name already exists, try another name" });
+    }
+    await Chat.create(chatData);
 
-  const isChatNameAlreadyExist = await Chat.findOne({ chatName: roomName });
-  if (isChatNameAlreadyExist) {
-    return res
-      .status(400)
-      .json({ msg: "a chat of this name already exists, try another name" });
+    let createdRoom = await Chat.findOne({
+      isGroupChat: true,
+      chatName: roomName,
+    })
+      .populate("users", "-password")
+      .populate("latestMessage");
+
+    res.status(200).json({ createdRoom });
+  } catch (err) {
+    res.status(400).json({ msg: JSON.stringify(err) });
   }
-  const createdChat = await Chat.create(chatData);
-  res.status(200).json(createdChat);
 };
 
 const accessRoom = async (req, res) => {
@@ -115,7 +126,7 @@ const accessRoom = async (req, res) => {
     select: "name email",
   });
 
-  const isUserExistInRoom = isChat[0].users.find((user) => user._id == userId);
+  const isUserExistInRoom = isChat[0].users.find((user) => user._id === userId);
 
   if (isUserExistInRoom) {
     return res.status(200).send(isChat[0]);

@@ -27,9 +27,9 @@ export const Modal = ({ toggleModal }) => {
 
     await createRoom({ accessToken, roomName })
       .then(async (res) => {
-        const response = await res.json();
         if (res.ok) {
-          dispatch(addToAllChats(response));
+          const { createdRoom } = await res.json();
+          dispatch(addToAllChats(createdRoom));
           setRoomStatus({
             showRoomStatus: true,
             created: true,
@@ -37,11 +37,12 @@ export const Modal = ({ toggleModal }) => {
           });
           setRoomName("");
           return;
-        } else {
+        } else if (!res.ok) {
+          const { msg } = await res.json();
           setRoomStatus({
             showRoomStatus: true,
             created: false,
-            msg: response.msg,
+            msg: msg,
           });
         }
         setTimeout(() => {

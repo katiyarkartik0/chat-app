@@ -35,8 +35,6 @@ const Chat = ({ chat = {}, notification }) => {
     };
   }, [chat]);
 
-
-
   const getLatestMessageDisplay = useCallback(() => {
     let latestMessage = chat.latestMessage?.content;
 
@@ -45,11 +43,11 @@ const Chat = ({ chat = {}, notification }) => {
     }
     const { isGroupChat } = chat;
     if (isGroupChat && latestMessage) {
-      const { sender: { email = "" } = "" } = chat.latestMessage;
-      latestMessage = email + ": " + latestMessage;
+      const { sender: { name ="" } = "" } = chat.latestMessage;
+      latestMessage = name + ": " + latestMessage;
     }
-    if(latestMessage.length>21){
-      latestMessage = latestMessage.substring(0,21) + "..."
+    if (typeof latestMessage === "string" && latestMessage.length > 21) {
+      latestMessage = latestMessage.substring(0, 21) + "...";
     }
     return latestMessage;
   }, [latestMessageDirectory[chat?._id]]);
