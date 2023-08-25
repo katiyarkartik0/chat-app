@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
-  res.status(200).send("Wlcome");
+  res.status(200).send("Welcome");
 });
 
 app.use("/api/auth", authRoutes);
@@ -36,7 +36,7 @@ mongoose
     const server = app.listen(process.env.PORT);
     const io = new Server(server, {
       cors: {
-        origin: "http://localhost:3000",
+        origin: process.env.ALLOWED_ORIGIN_URL,
       },
     });
 
