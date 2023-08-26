@@ -36,7 +36,7 @@ mongoose
     const server = app.listen(process.env.PORT);
     const io = new Server(server, {
       cors: {
-        origin: "http://localhost:3000",
+        origin: process.env.ALLOWED_ORIGIN_URL,
       },
     });
 
