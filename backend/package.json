@@ -13,9 +13,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "test": "mocha 'test/**/*.js' --exit --timeout 7000",
-    "build": "npm install --legacy-peer-deps && npm install --legacy-peer-deps --prefix frontend && npm run build --prefix frontend"
-
+    "test": "mocha 'test/**/*.js' --exit --timeout 7000"
   },
   "name": "chat-app",
   "version": "1.0.0",
